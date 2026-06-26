@@ -1,0 +1,1058 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Arcana Profunda · Tarot Profesional</title>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Cinzel+Decorative:wght@400;700&family=EB+Garamond:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a0a0f;
+    --bg2: #0f0f1a;
+    --gold: #c9a84c;
+    --gold-light: #e8c97a;
+    --gold-dim: #7a6530;
+    --violet: #6b4fa0;
+    --violet-light: #9b7fd4;
+    --violet-dim: #2d1f4a;
+    --text: #e8e0d0;
+    --text-dim: #9a8f7e;
+    --card-back: #12102a;
+    --card-border: #c9a84c;
+    --shadow: rgba(201,168,76,0.15);
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'EB Garamond', serif;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* Stars background */
+  body::before {
+    content: '';
+    position: fixed; inset: 0;
+    background-image:
+      radial-gradient(1px 1px at 10% 20%, rgba(201,168,76,0.4) 0%, transparent 100%),
+      radial-gradient(1px 1px at 30% 80%, rgba(155,127,212,0.3) 0%, transparent 100%),
+      radial-gradient(1px 1px at 50% 10%, rgba(201,168,76,0.3) 0%, transparent 100%),
+      radial-gradient(1px 1px at 70% 60%, rgba(155,127,212,0.4) 0%, transparent 100%),
+      radial-gradient(1px 1px at 90% 30%, rgba(201,168,76,0.3) 0%, transparent 100%),
+      radial-gradient(1px 1px at 20% 50%, rgba(155,127,212,0.2) 0%, transparent 100%),
+      radial-gradient(1px 1px at 80% 90%, rgba(201,168,76,0.2) 0%, transparent 100%),
+      radial-gradient(1.5px 1.5px at 45% 45%, rgba(255,255,255,0.15) 0%, transparent 100%),
+      radial-gradient(1.5px 1.5px at 65% 15%, rgba(255,255,255,0.12) 0%, transparent 100%),
+      radial-gradient(1.5px 1.5px at 15% 75%, rgba(255,255,255,0.1) 0%, transparent 100%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* Header */
+  header {
+    text-align: center;
+    padding: 3rem 1rem 2rem;
+    position: relative;
+    z-index: 1;
+  }
+  .sigil {
+    font-size: 2.5rem;
+    line-height: 1;
+    margin-bottom: 0.5rem;
+    filter: drop-shadow(0 0 12px var(--gold));
+  }
+  h1 {
+    font-family: 'Cinzel Decorative', serif;
+    font-size: clamp(1.4rem, 4vw, 2.4rem);
+    color: var(--gold-light);
+    letter-spacing: 0.1em;
+    text-shadow: 0 0 30px rgba(201,168,76,0.4);
+    margin-bottom: 0.3rem;
+  }
+  .subtitle {
+    font-size: 1rem;
+    color: var(--text-dim);
+    font-style: italic;
+    letter-spacing: 0.05em;
+  }
+  .divider {
+    display: flex; align-items: center; gap: 1rem;
+    max-width: 500px; margin: 1.5rem auto 0;
+  }
+  .divider span { flex: 1; height: 1px; background: linear-gradient(90deg, transparent, var(--gold-dim), transparent); }
+  .divider-icon { color: var(--gold); font-size: 1.1rem; }
+
+  /* Main panel */
+  main { position: relative; z-index: 1; padding: 1rem; max-width: 1100px; margin: 0 auto; }
+
+  /* Setup panel */
+  #setup-panel {
+    background: linear-gradient(135deg, rgba(15,15,26,0.95), rgba(20,15,40,0.95));
+    border: 1px solid var(--gold-dim);
+    border-radius: 1.2rem;
+    padding: 2rem;
+    max-width: 700px;
+    margin: 0 auto 2rem;
+    box-shadow: 0 8px 40px rgba(0,0,0,0.5), inset 0 1px 0 rgba(201,168,76,0.1);
+  }
+  .setup-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.2rem; }
+  @media(max-width:540px){ .setup-grid { grid-template-columns: 1fr; } }
+
+  .field label {
+    display: block;
+    font-family: 'Cinzel', serif;
+    font-size: 0.72rem;
+    letter-spacing: 0.15em;
+    color: var(--gold);
+    text-transform: uppercase;
+    margin-bottom: 0.5rem;
+  }
+  .field select, .field input {
+    width: 100%;
+    background: rgba(0,0,0,0.4);
+    border: 1px solid var(--gold-dim);
+    border-radius: 0.5rem;
+    color: var(--text);
+    font-family: 'EB Garamond', serif;
+    font-size: 1rem;
+    padding: 0.65rem 0.9rem;
+    outline: none;
+    transition: border-color 0.3s, box-shadow 0.3s;
+    appearance: none;
+    cursor: pointer;
+  }
+  .field select:focus, .field input:focus {
+    border-color: var(--gold);
+    box-shadow: 0 0 0 2px rgba(201,168,76,0.15);
+  }
+  .field select option { background: #1a1530; color: var(--text); }
+
+  .tirada-desc {
+    margin-top: 1.2rem;
+    padding: 1rem;
+    background: rgba(107,79,160,0.1);
+    border: 1px solid rgba(107,79,160,0.3);
+    border-radius: 0.6rem;
+    font-size: 0.92rem;
+    color: var(--text-dim);
+    font-style: italic;
+    min-height: 3.5rem;
+    transition: opacity 0.3s;
+  }
+
+  .btn-consult {
+    display: block;
+    width: 100%;
+    margin-top: 1.5rem;
+    padding: 1rem 2rem;
+    background: linear-gradient(135deg, #7a5c20, #c9a84c, #7a5c20);
+    background-size: 200% 100%;
+    border: none;
+    border-radius: 0.6rem;
+    color: #0a0a0f;
+    font-family: 'Cinzel', serif;
+    font-size: 1rem;
+    font-weight: 700;
+    letter-spacing: 0.15em;
+    cursor: pointer;
+    text-transform: uppercase;
+    transition: background-position 0.4s, box-shadow 0.3s, transform 0.1s;
+    box-shadow: 0 4px 20px rgba(201,168,76,0.3);
+  }
+  .btn-consult:hover {
+    background-position: 100% 0;
+    box-shadow: 0 6px 30px rgba(201,168,76,0.5);
+    transform: translateY(-1px);
+  }
+  .btn-consult:active { transform: translateY(0); }
+
+  /* Shuffle animation */
+  #shuffle-overlay {
+    display: none;
+    position: fixed; inset: 0; z-index: 100;
+    background: rgba(5,5,15,0.92);
+    align-items: center; justify-content: center;
+    flex-direction: column; gap: 1.5rem;
+  }
+  #shuffle-overlay.active { display: flex; }
+  .shuffle-cards {
+    position: relative; width: 120px; height: 180px;
+  }
+  .shuffle-card {
+    position: absolute;
+    width: 70px; height: 110px;
+    border-radius: 8px;
+    background: linear-gradient(135deg, #1a1040, #2d1f4a);
+    border: 2px solid var(--gold-dim);
+    box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+    animation: shuffleAnim 1.8s ease-in-out infinite;
+  }
+  .shuffle-card:nth-child(1){ left:0; top:20px; animation-delay:0s; }
+  .shuffle-card:nth-child(2){ left:25px; top:10px; animation-delay:0.2s; }
+  .shuffle-card:nth-child(3){ left:50px; top:0px; animation-delay:0.4s; }
+  @keyframes shuffleAnim {
+    0%,100%{ transform: rotate(-8deg) translateY(0); }
+    50%{ transform: rotate(8deg) translateY(-15px); }
+  }
+  .shuffle-text {
+    font-family: 'Cinzel', serif;
+    color: var(--gold);
+    letter-spacing: 0.2em;
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    animation: pulse 1.5s ease-in-out infinite;
+  }
+  @keyframes pulse{ 0%,100%{opacity:0.5} 50%{opacity:1} }
+
+  /* Reading section */
+  #reading-section { display: none; }
+  #reading-section.active { display: block; }
+
+  .reading-header {
+    text-align: center;
+    margin-bottom: 2rem;
+    padding: 1.5rem;
+    background: linear-gradient(135deg, rgba(15,15,26,0.9), rgba(20,15,40,0.9));
+    border: 1px solid var(--gold-dim);
+    border-radius: 1rem;
+  }
+  .reading-title {
+    font-family: 'Cinzel', serif;
+    font-size: clamp(1.1rem, 3vw, 1.6rem);
+    color: var(--gold-light);
+    margin-bottom: 0.4rem;
+  }
+  .reading-meta {
+    font-size: 0.9rem;
+    color: var(--text-dim);
+    font-style: italic;
+  }
+
+  /* Cards grid */
+  .cards-stage {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.2rem;
+    justify-content: center;
+    margin-bottom: 2rem;
+  }
+
+  .card-slot {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.6rem;
+    flex: 0 0 auto;
+  }
+  .slot-label {
+    font-family: 'Cinzel', serif;
+    font-size: 0.65rem;
+    letter-spacing: 0.12em;
+    color: var(--gold-dim);
+    text-transform: uppercase;
+    text-align: center;
+    max-width: 130px;
+  }
+
+  .card-flip {
+    width: 110px; height: 170px;
+    perspective: 1000px;
+    cursor: pointer;
+  }
+  @media(max-width:480px){
+    .card-flip{ width: 90px; height: 140px; }
+  }
+  .card-inner {
+    width: 100%; height: 100%;
+    position: relative;
+    transform-style: preserve-3d;
+    transition: transform 0.7s cubic-bezier(0.4,0.2,0.2,1);
+    border-radius: 10px;
+  }
+  .card-inner.flipped { transform: rotateY(180deg); }
+
+  .card-face {
+    position: absolute; inset: 0;
+    border-radius: 10px;
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+    display: flex; align-items: center; justify-content: center;
+    flex-direction: column;
+    overflow: hidden;
+  }
+  .card-back {
+    background: linear-gradient(135deg, #0d0a20, #1e1640);
+    border: 2px solid var(--gold-dim);
+    box-shadow: 0 4px 20px rgba(0,0,0,0.6), inset 0 0 20px rgba(107,79,160,0.1);
+  }
+  .card-back::before {
+    content: '✦';
+    font-size: 2.5rem;
+    color: var(--gold-dim);
+    text-shadow: 0 0 10px rgba(201,168,76,0.3);
+  }
+  .card-back .tap-hint {
+    position: absolute; bottom: 8px;
+    font-size: 0.6rem; color: var(--gold-dim);
+    font-family: 'Cinzel', serif; letter-spacing: 0.1em;
+    text-transform: uppercase; opacity: 0.7;
+  }
+  .card-front {
+    background: linear-gradient(160deg, #16103a, #0d0a20);
+    border: 2px solid var(--gold);
+    box-shadow: 0 4px 20px rgba(0,0,0,0.6), 0 0 15px rgba(201,168,76,0.1);
+    padding: 0.4rem;
+    flex-direction: column;
+    gap: 0.2rem;
+    transform: rotateY(180deg);
+  }
+  .card-front.inverted-card .card-emoji { transform: rotate(180deg); }
+  .card-emoji { font-size: 2.8rem; line-height: 1; transition: transform 0.3s; }
+  @media(max-width:480px){ .card-emoji{ font-size: 2.2rem; } }
+  .card-name {
+    font-family: 'Cinzel', serif;
+    font-size: 0.55rem;
+    letter-spacing: 0.08em;
+    color: var(--gold);
+    text-align: center;
+    text-transform: uppercase;
+    padding: 0 0.2rem;
+    line-height: 1.3;
+  }
+  .card-inv-badge {
+    font-size: 0.5rem;
+    color: var(--violet-light);
+    font-family: 'Cinzel', serif;
+    letter-spacing: 0.05em;
+  }
+
+  /* Interpretation panels */
+  .interp-panel {
+    opacity: 0;
+    transform: translateY(10px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+    max-width: 750px;
+    margin: 0 auto 1.5rem;
+    background: linear-gradient(135deg, rgba(15,15,26,0.97), rgba(20,15,40,0.97));
+    border: 1px solid var(--gold-dim);
+    border-left: 3px solid var(--gold);
+    border-radius: 0.8rem;
+    padding: 1.5rem;
+    box-shadow: 0 4px 30px rgba(0,0,0,0.4);
+    display: none;
+  }
+  .interp-panel.visible {
+    opacity: 1;
+    transform: translateY(0);
+    display: block;
+  }
+  .interp-pos {
+    font-family: 'Cinzel', serif;
+    font-size: 0.7rem;
+    letter-spacing: 0.18em;
+    color: var(--gold-dim);
+    text-transform: uppercase;
+    margin-bottom: 0.3rem;
+  }
+  .interp-card-title {
+    font-family: 'Cinzel', serif;
+    font-size: 1.15rem;
+    color: var(--gold-light);
+    margin-bottom: 0.8rem;
+  }
+  .interp-badge {
+    display: inline-block;
+    font-size: 0.65rem;
+    padding: 0.15rem 0.5rem;
+    border-radius: 2rem;
+    font-family: 'Cinzel', serif;
+    letter-spacing: 0.1em;
+    margin-left: 0.5rem;
+    vertical-align: middle;
+  }
+  .badge-derecha { background: rgba(201,168,76,0.15); color: var(--gold); border: 1px solid var(--gold-dim); }
+  .badge-invertida { background: rgba(107,79,160,0.2); color: var(--violet-light); border: 1px solid var(--violet); }
+  .interp-body { font-size: 1rem; line-height: 1.75; color: var(--text); }
+  .interp-body p { margin-bottom: 0.8rem; }
+  .interp-body p:last-child { margin-bottom: 0; }
+  .interp-signo { color: var(--violet-light); font-style: italic; }
+  .interp-momento { color: var(--gold-dim); font-style: italic; font-size: 0.92rem; }
+
+  /* Bottom nav */
+  .bottom-actions {
+    text-align: center;
+    padding: 2rem 1rem;
+    display: none;
+  }
+  .bottom-actions.active { display: block; }
+  .btn-reset {
+    background: transparent;
+    border: 1px solid var(--gold-dim);
+    color: var(--gold);
+    font-family: 'Cinzel', serif;
+    font-size: 0.8rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    padding: 0.7rem 2rem;
+    border-radius: 2rem;
+    cursor: pointer;
+    transition: all 0.3s;
+  }
+  .btn-reset:hover { background: rgba(201,168,76,0.1); border-color: var(--gold); box-shadow: 0 0 15px rgba(201,168,76,0.2); }
+
+  footer {
+    text-align: center;
+    padding: 2rem 1rem;
+    font-size: 0.8rem;
+    color: var(--gold-dim);
+    font-style: italic;
+    letter-spacing: 0.05em;
+    position: relative; z-index: 1;
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="sigil">✦</div>
+  <h1>Arcana Profunda</h1>
+  <p class="subtitle">Tarot Profesional · Lectura del Momento</p>
+  <div class="divider">
+    <span></span><span class="divider-icon">☽ ✦ ☾</span><span></span>
+  </div>
+</header>
+
+<main>
+  <!-- Setup -->
+  <div id="setup-panel">
+    <div class="setup-grid">
+      <div class="field">
+        <label>Tu Signo Zodiacal</label>
+        <select id="signo-select">
+          <option value="">— Elige tu signo —</option>
+          <option value="aries">♈ Aries</option>
+          <option value="tauro">♉ Tauro</option>
+          <option value="geminis">♊ Géminis</option>
+          <option value="cancer">♋ Cáncer</option>
+          <option value="leo">♌ Leo</option>
+          <option value="virgo">♍ Virgo</option>
+          <option value="libra">♎ Libra</option>
+          <option value="escorpio">♏ Escorpio</option>
+          <option value="sagitario">♐ Sagitario</option>
+          <option value="capricornio">♑ Capricornio</option>
+          <option value="acuario">♒ Acuario</option>
+          <option value="piscis">♓ Piscis</option>
+        </select>
+      </div>
+      <div class="field">
+        <label>Tipo de Tirada</label>
+        <select id="tirada-select">
+          <option value="">— Elige la tirada —</option>
+          <option value="sino">Sí/No Rápido (1 carta)</option>
+          <option value="tres">Tirada de 3 Cartas</option>
+          <option value="amor">Tirada de Amor (3 cartas)</option>
+          <option value="celta6">Cruz Celta Simplificada (6 cartas)</option>
+          <option value="celta10">Cruz Celta Completa (10 cartas)</option>
+        </select>
+      </div>
+    </div>
+    <div class="tirada-desc" id="tirada-desc">Selecciona una tirada para ver su descripción y las posiciones que revela.</div>
+    <button class="btn-consult" onclick="iniciarConsulta()">✦ Consultar el Oráculo ✦</button>
+  </div>
+
+  <!-- Shuffle overlay -->
+  <div id="shuffle-overlay">
+    <div class="shuffle-cards">
+      <div class="shuffle-card"></div>
+      <div class="shuffle-card"></div>
+      <div class="shuffle-card"></div>
+    </div>
+    <div class="shuffle-text">Barajando el mazo...</div>
+  </div>
+
+  <!-- Reading -->
+  <div id="reading-section">
+    <div class="reading-header">
+      <div class="reading-title" id="reading-title"></div>
+      <div class="reading-meta" id="reading-meta"></div>
+    </div>
+    <div class="cards-stage" id="cards-stage"></div>
+    <div id="interps-container"></div>
+  </div>
+
+  <div class="bottom-actions" id="bottom-actions">
+    <button class="btn-reset" onclick="resetApp()">↺ Nueva Consulta</button>
+  </div>
+</main>
+
+<footer>Las cartas revelan posibilidades, no certezas · Arcana Profunda © 2025</footer>
+
+<script>
+// ============================================================
+// TIRADAS DEFINITION
+// ============================================================
+const TIRADAS = {
+  sino: {
+    nombre: 'Oráculo del Sí/No',
+    desc: 'Una sola carta resume la energía dominante de tu pregunta. La respuesta se lee en su orientación y esencia.',
+    posiciones: [{ key: 'corazon_asunto', label: 'La Respuesta del Oráculo' }]
+  },
+  tres: {
+    nombre: 'Tirada de las Tres Llaves',
+    desc: 'Tres cartas iluminan el eje temporal: lo que fue, lo que es y lo que puede ser.',
+    posiciones: [
+      { key: 'pasado', label: 'Pasado · Lo que fue' },
+      { key: 'presente', label: 'Presente · Lo que es' },
+      { key: 'futuro', label: 'Futuro · Lo que puede ser' }
+    ]
+  },
+  amor: {
+    nombre: 'Espejo del Amor',
+    desc: 'Tres cartas para explorar la dinámica afectiva: tu energía, la de la pareja y el vínculo que los une.',
+    posiciones: [
+      { key: 'yo', label: 'Tú · Tu energía' },
+      { key: 'pareja', label: 'La Pareja · Su energía' },
+      { key: 'vinculo', label: 'El Vínculo · La conexión' }
+    ]
+  },
+  celta6: {
+    nombre: 'Cruz Celta Simplificada',
+    desc: 'Seis posiciones para una visión completa: el corazón del asunto, el reto, el pasado, el futuro, tu actitud interna y el resultado probable.',
+    posiciones: [
+      { key: 'corazon_asunto', label: 'I · El Corazón del Asunto' },
+      { key: 'reto', label: 'II · El Reto o Cruce' },
+      { key: 'pasado', label: 'III · Influencia del Pasado' },
+      { key: 'futuro', label: 'IV · Influencia del Futuro' },
+      { key: 'actitud', label: 'V · Tu Actitud Interna' },
+      { key: 'resultado', label: 'VI · Resultado Probable' }
+    ]
+  },
+  celta10: {
+    nombre: 'Cruz Celta Completa',
+    desc: 'La tirada maestra: diez posiciones que abarcan el presente, el reto, la base, el pasado, el potencial, el futuro inmediato, tú mismo, tu entorno, esperanzas/miedos y el resultado final.',
+    posiciones: [
+      { key: 'corazon_asunto', label: 'I · El Corazón del Asunto' },
+      { key: 'reto', label: 'II · El Reto o Cruce' },
+      { key: 'base', label: 'III · La Raíz o Base' },
+      { key: 'pasado', label: 'IV · Influencia del Pasado' },
+      { key: 'potencial', label: 'V · La Corona · Potencial' },
+      { key: 'futuro', label: 'VI · Futuro Inmediato' },
+      { key: 'yo', label: 'VII · Tú mismo' },
+      { key: 'entorno', label: 'VIII · El Entorno' },
+      { key: 'esperanza', label: 'IX · Esperanzas y Miedos' },
+      { key: 'resultado', label: 'X · El Resultado Final' }
+    ]
+  }
+};
+
+// ============================================================
+// ZODIAC DESCRIPTIONS
+// ============================================================
+const SIGNOS_LABEL = {
+  aries:'♈ Aries', tauro:'♉ Tauro', geminis:'♊ Géminis',
+  cancer:'♋ Cáncer', leo:'♌ Leo', virgo:'♍ Virgo',
+  libra:'♎ Libra', escorpio:'♏ Escorpio', sagitario:'♐ Sagitario',
+  capricornio:'♑ Capricornio', acuario:'♒ Acuario', piscis:'♓ Piscis'
+};
+
+// ============================================================
+// 78-CARD DATABASE (compressed but rich)
+// ============================================================
+const ARCANOS = [
+  // ── MAYORES ──
+  {id:0,nombre:'El Loco',emoji:'🃏',arcano:'Mayor',
+   sig:'La energía del Loco invita a dar un salto de fe hacia lo desconocido. Representa el inicio puro, la confianza en el universo y la libertad de ser auténtico, aunque el camino no esté trazado.',
+   inv:'Invertido, el Loco señala impulsividad peligrosa, evasión de responsabilidades o una ingenuidad que puede conducir al error. Es momento de detenerse y reflexionar antes de actuar.',
+   signo:{aries:'Tu fuego innato potencia la audacia del Loco; canaliza esa energía sin perder de vista los límites.',tauro:'El Loco te invita a soltar el apego a la seguridad y confiar en la abundancia del universo.',geminis:'Tu mente versátil abraza con facilidad la dualidad del Loco; aprovecha esta curiosidad.',cancer:'El Loco te pide que protejas tu corazón sensible mientras das el salto hacia lo nuevo.',leo:'Tu grandeza natural se amplifica con la energía del Loco; lidera con valentía y sin miedo al juicio.',virgo:'Suelta el análisis por un momento; el Loco te invita a confiar en el caos creativo.',libra:'El Loco rompe el equilibrio que buscas; este desequilibrio puede ser el inicio de algo extraordinario.',escorpio:'Tu profundidad transforma la energía del Loco en una reinvención total y poderosa.',sagitario:'El Loco amplifica tu espíritu aventurero; este es tu momento de explorar sin fronteras.',capricornio:'El Loco desafía tu estructura; permítete soltar el control para descubrir nuevas cimas.',acuario:'Tu espíritu innovador resuena con el Loco; sé el catalizador del cambio que el mundo necesita.',piscis:'El Loco te invita a soñar sin red; tu intuición es la brújula perfecta para este salto.'},
+   pos:{pasado:'En el pasado, actuaste con una libertad quizás ingenua que sembró las semillas del presente.',futuro:'El futuro te llama a dar un salto de fe; la oportunidad llega disfrazada de incertidumbre.',consejo:'Confía en el proceso aunque no veas el camino completo.',corazon_asunto:'El núcleo de tu consulta es un comienzo radical: una nueva puerta se abre ante ti.',resultado:'El resultado apunta hacia una liberación y un nuevo ciclo de vida.',reto:'El desafío es superar el miedo a lo desconocido.',actitud:'Tu actitud interna es de apertura y curiosidad, aunque convive con cierta ansiedad.',yo:'Te encuentras en un momento de transición y renovación profunda.',entorno:'Quienes te rodean perciben tu energía de cambio con mezcla de admiración e inquietud.',esperanza:'Tu mayor deseo es liberarte de las cadenas que te limitan; tu mayor miedo, perder la seguridad.',potencial:'Tu potencial es el de un comienzo sin precedentes, lleno de posibilidades vírgenes.',base:'Los cimientos de tu situación descansan en una decisión espontánea del pasado.',vinculo:'El vínculo nace de la libertad mutua y el encuentro inesperado.',pareja:'La otra persona trae una energía fresca, impredecible y transformadora.',presente:'Ahora mismo vives un umbral; algo termina y algo nace simultáneamente.',base2:''},
+   momento:{mañana:'Aprovecha la frescura del amanecer para dar el primer paso.',tarde:'La energía del mediodía impulsa tu decisión; actúa con intención.',noche:'La noche te invita a soñar el salto antes de darlo.'}
+  },
+  {id:1,nombre:'El Mago',emoji:'🎩',arcano:'Mayor',
+   sig:'El Mago canaliza todas las fuerzas del universo a través de su voluntad. Representa la maestría sobre los propios recursos, la manifestación consciente y el poder de transformar la intención en realidad.',
+   inv:'Invertido, el Mago advierte sobre la manipulación, el uso deshonesto del poder o talentos que se desperdician por falta de disciplina. Revisa si estás actuando con integridad.',
+   signo:{aries:'Tu voluntad de hierro más los dones del Mago crean un poder manifestador imparable.',tauro:'El Mago te recuerda que tienes los recursos para construir lo que deseas; úsalos con paciencia.',geminis:'Tu versatilidad mental te convierte en un Mago natural; domina un arte antes de saltar al siguiente.',cancer:'El Mago te invita a usar tu empatía como herramienta de transformación consciente.',leo:'Tu carisma es tu varita mágica; úsalo para crear, no solo para brillar.',virgo:'El Mago honra tu precisión; cada detalle que perfeccionas es un ingrediente del gran hechizo.',libra:'La armonía que buscas se crea, no se espera; el Mago te da la varita.',escorpio:'Tu poder de transformación se une al del Mago para crear cambios profundos e irrevocables.',sagitario:'El Mago te pide que focalices tu energía; la visión sin acción concreta es solo un sueño.',capricornio:'Tu disciplina más los dones del Mago hacen de ti un arquitecto de destinos.',acuario:'El Mago amplifica tu genialidad; traduce tus ideas revolucionarias en resultados tangibles.',piscis:'Tu conexión con lo invisible te da acceso a poderes que el Mago te enseña a canalizar.'},
+   pos:{pasado:'En el pasado, ejerciste poder y habilidad que moldearon tu presente.',futuro:'El futuro te pide que domines tus herramientas y actúes con maestría consciente.',consejo:'Confía en tus capacidades; ya tienes todo lo que necesitas para lograrlo.',corazon_asunto:'El núcleo es tu capacidad de manifestar; todo depende de cómo dirijas tu voluntad.',resultado:'El resultado es la realización de tus planes si actúas con intención y maestría.',reto:'El desafío es evitar dispersar tu energía en demasiadas direcciones a la vez.',actitud:'Tu actitud es de confianza y determinación; sabes que puedes lograrlo.',yo:'Eres el architecto de tu propia realidad en este momento.',entorno:'Tu entorno reconoce tu poder y habilidad, lo que puede generar tanto aliados como envidiosos.',esperanza:'Deseas demostrar tu valía; temes que tus capacidades no sean suficientes.',potencial:'Tu potencial es ilimitado cuando alineas voluntad, conocimiento y acción.',base:'Los cimientos son sólidos; has desarrollado habilidades valiosas que ahora puedes usar.',vinculo:'El vínculo se construye activamente con intención y comunicación clara.',pareja:'La otra persona es hábil, carismática y con una agenda propia que conviene descifrar.',presente:'Ahora tienes acceso a todos los recursos necesarios; el momento de actuar es este.',base2:''},
+   momento:{mañana:'La claridad matutina potencia tu foco; planifica tu hechizo del día.',tarde:'La energía activa de la tarde es ideal para ejecutar tus planes con precisión.',noche:'Revisa lo logrado y prepara tu próxima manifestación con intención.'}
+  },
+  {id:2,nombre:'La Sacerdotisa',emoji:'🌙',arcano:'Mayor',
+   sig:'La Sacerdotisa guarda los misterios del inconsciente y la sabiduría intuitiva. Representa el conocimiento velado, la paciencia sagrada y la necesidad de escuchar la voz interna antes de actuar.',
+   inv:'Invertida, la Sacerdotisa indica secretos ocultos que dañan, intuición bloqueada o una tendencia a ignorar lo que el interior ya sabe. Es tiempo de honrar el silencio interior.',
+   signo:{aries:'La Sacerdotisa te pide pausar tu impulso natural; la respuesta llega en el silencio.',tauro:'Tu sensualidad se une a la sabiduría de la Sacerdotisa; escucha tu cuerpo como oráculo.',geminis:'La Sacerdotisa te pide que vayas más allá de la mente racional para encontrar la verdad más profunda.',cancer:'Eres naturalmente afín a la Sacerdotisa; confía en tus sueños y presentimientos.',leo:'La Sacerdotisa te invita a brillar hacia adentro antes de hacerlo hacia afuera.',virgo:'Tu mente analítica encuentra en la Sacerdotisa un complemento sagrado: la intuición.',libra:'La Sacerdotisa te ofrece el equilibrio entre conocer y sentir; ambos son válidos.',escorpio:'La Sacerdotisa es tu aliada natural; los misterios profundos son tu territorio.',sagitario:'La Sacerdotisa te pide que explores la filosofía interna antes de buscar verdades externas.',capricornio:'La sabiduría de la Sacerdotisa complementa tu pragmatismo con una dimensión más profunda.',acuario:'La Sacerdotisa te invita a explorar los misterios del inconsciente colectivo.',piscis:'Eres el signo más cercano a la Sacerdotisa; tu intuición es tu mayor talento.'},
+   pos:{pasado:'En el pasado, la intuición o los secretos jugaron un papel crucial en lo que vives hoy.',futuro:'El futuro exige paciencia y escucha interna antes de que se revele la respuesta.',consejo:'No forces la situación; la respuesta emergerá cuando estés listo para recibirla.',corazon_asunto:'El núcleo de tu consulta es un misterio que aún no se ha revelado completamente.',resultado:'El resultado depende de lo que aún está oculto; la paciencia es la clave.',reto:'El desafío es aprender a confiar en lo que sientes más que en lo que puedes probar.',actitud:'Tu actitud interna es contemplativa; estás procesando más de lo que expresas.',yo:'Eres un observador sagaz que guarda mucho más de lo que muestra.',entorno:'Tu entorno no ve todo lo que ocurre; hay dinámicas ocultas que te afectan.',esperanza:'Deseas conocer la verdad; temes lo que esa verdad pueda revelar.',potencial:'Tu potencial es el de la sabiduría intuitiva que puede iluminar el camino.',base:'Los cimientos de la situación incluyen información oculta o no procesada.',vinculo:'El vínculo tiene profundidades no exploradas; hay más de lo que parece en la superficie.',pareja:'La otra persona guarda secretos o sentimientos que aún no ha expresado.',presente:'Estás en un período de incubación; lo que necesitas saber se revelará pronto.',base2:''},
+   momento:{mañana:'El amanecer trae mensajes en sueños; anótalos antes de que se desvanezcan.',tarde:'La tarde es propicia para la meditación y la escucha interior.',noche:'La noche es tu aliada; medita y permite que los misterios se desplieguen.'}
+  },
+  {id:3,nombre:'La Emperatriz',emoji:'👸',arcano:'Mayor',
+   sig:'La Emperatriz es la energía de la abundancia, la creatividad fértil y el amor que nutre. Representa la conexión con la naturaleza, la sensualidad sagrada y el poder de crear vida, proyectos y relaciones prósperas.',
+   inv:'Invertida, la Emperatriz señala bloqueos creativos, dependencia emocional o una sobreprotección que sofoca. También puede indicar desconexión del cuerpo y la naturaleza.',
+   signo:{aries:'La Emperatriz te invita a nutrir tus proyectos con la misma energía que usas para iniciarlos.',tauro:'Eres el signo más afín a la Emperatriz; tu conexión con la belleza y la naturaleza florece ahora.',geminis:'La Emperatriz te pide que des forma tangible a tus múltiples ideas creativas.',cancer:'Tu naturaleza nutricia resuena profundamente con la Emperatriz; es tiempo de recibir también.',leo:'La Emperatriz amplifica tu poder creativo; lo que creas ahora tiene el sello de la grandeza.',virgo:'La Emperatriz te invita a soltar el perfeccionismo y permitir que la creatividad fluya libremente.',libra:'La belleza y la armonía que buscas florecen bajo la energía fértil de la Emperatriz.',escorpio:'La Emperatriz transforma tu intensidad en poder creativo y regenerador.',sagitario:'La Emperatriz te ancla a la tierra; el crecimiento real necesita raíces profundas.',capricornio:'La abundancia que trabajas para crear ahora tiene el apoyo del cosmos.',acuario:'La Emperatriz te pide que cuides a las personas, no solo a las ideas.',piscis:'Tu sensibilidad más la energía de la Emperatriz crean un ambiente de magia y belleza.'},
+   pos:{pasado:'En el pasado, una energía creativa o nutritiva fue fundamental para tu desarrollo.',futuro:'El futuro trae abundancia y crecimiento si cultivas con paciencia y amor.',consejo:'Nutre lo que quieres que crezca; pon amor en cada acción.',corazon_asunto:'El núcleo es la creatividad, la abundancia y el amor como fuerzas transformadoras.',resultado:'El resultado es florecimiento y prosperidad en el área consultada.',reto:'El desafío es no sofocar lo que intentas nutrir con exceso de control.',actitud:'Tu actitud es receptiva y generosa; estás en modo de creación y cuidado.',yo:'Estás en un momento de fecundidad creativa y emocional.',entorno:'Tu entorno florece gracias a tu cuidado; eres el centro nutritivo del sistema.',esperanza:'Deseas crear algo hermoso y duradero; temes no ser suficiente para sostenerlo.',potencial:'Tu potencial de crear abundancia y belleza es extraordinariamente alto.',base:'Los cimientos son sólidos y fértiles; hay recursos disponibles para crecer.',vinculo:'El vínculo es nutritivo, sensual y con potencial de profundizar bellamente.',pareja:'La otra persona aporta calidez, sensualidad y una energía creativa desbordante.',presente:'Estás en un período de plena fertilidad creativa; actúa, planta y nutre.',base2:''},
+   momento:{mañana:'El amanecer es perfecto para conectar con la naturaleza y visualizar lo que deseas crear.',tarde:'La tarde invita a crear con las manos: cocina, escribe, dibuja, construye.',noche:'La noche te nutre; permítete recibir descanso y placer como actos sagrados.'}
+  },
+  {id:4,nombre:'El Emperador',emoji:'👑',arcano:'Mayor',
+   sig:'El Emperador representa la autoridad consciente, la estructura protectora y el dominio de la realidad material. Es la energía que construye imperios con planificación, disciplina y liderazgo íntegro.',
+   inv:'Invertido, el Emperador señala abuso de autoridad, rigidez excesiva o una figura paterna opresora. También puede indicar falta de disciplina propia o incapacidad para establecer límites saludables.',
+   signo:{aries:'El Emperador potencia tu liderazgo natural; ahora es tiempo de construir, no solo de conquistar.',tauro:'Tu constancia más la estructura del Emperador crean resultados sólidos y duraderos.',geminis:'El Emperador te pide que estructura tus brillantes ideas para darles forma real.',cancer:'El Emperador te invita a proteger lo que amas desde la firmeza amorosa, no desde el miedo.',leo:'Tu liderazgo natural encuentra en el Emperador la confirmación de tu poder; úsalo con sabiduría.',virgo:'El Emperador valora tu precisión; juntos construyen sistemas impecables.',libra:'El Emperador te da el marco estructural para que tu equilibrio sea sostenible.',escorpio:'Tu determinación más la autoridad del Emperador te hacen imparable; vigila el exceso de control.',sagitario:'El Emperador te pide que disciplines tu visión aventurera para convertirla en logro real.',capricornio:'Eres naturalmente afín al Emperador; tu disciplina y ambición construyen legados.',acuario:'El Emperador te pide que uses las estructuras existentes para implementar tus ideas innovadoras.',piscis:'El Emperador te da el ancla que necesitas; estructura sin rigidez para que tus sueños aterricen.'},
+   pos:{pasado:'En el pasado, una figura de autoridad o una estructura definida fue clave en tu historia.',futuro:'El futuro pide que establezcas orden y disciplina para lograr tus metas.',consejo:'Construye con metodología; los grandes edificios necesitan cimientos sólidos.',corazon_asunto:'El núcleo es la necesidad de estructura, autoridad y control consciente de la situación.',resultado:'El resultado probable es el éxito si se mantiene la disciplina y la visión a largo plazo.',reto:'El desafío es ejercer autoridad sin caer en la rigidez o el control excesivo.',actitud:'Tu actitud es estratégica y estructurada; estás en modo de construcción y control.',yo:'Eres o necesitas ser la figura de autoridad en esta situación.',entorno:'Tu entorno necesita de tu liderazgo y estructura para funcionar correctamente.',esperanza:'Deseas tener el control de tu vida; temes perder la estabilidad que has construido.',potencial:'Tu potencial de liderazgo y construcción puede crear resultados extraordinarios.',base:'Los cimientos son firmes; hay una estructura de poder que sostiene la situación.',vinculo:'El vínculo necesita roles claros y estructura para prosperar establemente.',pareja:'La otra persona es protectora y estructurada, aunque puede tender a la autoridad rígida.',presente:'Estás en un momento de tomar las riendas y establecer orden en tu vida.',base2:''},
+   momento:{mañana:'La mañana es ideal para planificar con claridad y establecer prioridades del día.',tarde:'La tarde es el momento de ejecutar con disciplina lo que planeaste.',noche:'Revisa tu progreso y ajusta tu estrategia para mañana.'}
+  },
+  {id:5,nombre:'El Hierofante',emoji:'⛪',arcano:'Mayor',
+   sig:'El Hierofante representa la tradición sagrada, las instituciones y la sabiduría transmitida. Habla de compromisos formales, rituales y la búsqueda de guía espiritual dentro de estructuras establecidas.',
+   inv:'Invertido, el Hierofante señala dogmatismo, rebeldía contra normas que sí son necesarias o un falso guía espiritual. También puede indicar la necesidad de crear tu propio camino espiritual.',
+   signo:{aries:'El Hierofante te pide que aprendas de la tradición antes de romperla.',tauro:'Tu apreciación por lo duradero resuena con los valores del Hierofante.',geminis:'El Hierofante te invita a profundizar en una enseñanza en lugar de explorar todas superficialmente.',cancer:'Las tradiciones familiares y rituales tienen un poder sanador especial para ti ahora.',leo:'El Hierofante te recuerda que el verdadero liderazgo espiritual sirve a la comunidad.',virgo:'Tu amor por el perfeccionamiento se encuentra con el Hierofante en la práctica del rito.',libra:'El Hierofante ofrece el marco social que facilita las relaciones comprometidas.',escorpio:'El Hierofante desafía tus exploraciones de lo oculto; ¿qué tradición resuena con tu alma?',sagitario:'El Hierofante y tú tenéis una relación compleja; ¿qué filosofía te nutre realmente?',capricornio:'Las instituciones y tradiciones son tus aliadas naturales; el Hierofante confirma tu camino.',acuario:'El Hierofante te desafía: ¿qué estructuras conviene honrar y cuáles transgredir?',piscis:'La espiritualidad organizada puede ser un puente o una jaula; tú eliges qué papel juega.'},
+   pos:{pasado:'Una institución, mentor o tradición fue determinante en tu formación.',futuro:'El futuro puede traer compromisos formales, mentorías o acceso a enseñanzas sagradas.',consejo:'Busca la guía de quien ha caminado este camino antes; la tradición tiene sabiduría.',corazon_asunto:'El núcleo implica compromisos, instituciones, fe o la búsqueda de orientación.',resultado:'El resultado apunta hacia un acuerdo formal o el establecimiento de nuevos valores.',reto:'El desafío es distinguir entre la sabiduría de la tradición y el dogma limitante.',actitud:'Tu actitud busca orientación externa y la validación de estructuras reconocidas.',yo:'Buscas guía o eres tú quien guía a otros en este momento.',entorno:'Tu entorno opera dentro de estructuras sociales e institucionales definidas.',esperanza:'Deseas ser aceptado y guiado; temes ser juzgado por las normas del grupo.',potencial:'Tu potencial como maestro o como estudiante comprometido es muy alto.',base:'Los cimientos incluyen creencias, valores y tradiciones heredadas.',vinculo:'El vínculo puede formalizarse; podría haber un compromiso serio en el horizonte.',pareja:'La otra persona es tradicional, comprometida y busca una relación con estructura y valores.',presente:'Estás en un momento de buscar guía, comprometerte o reforzar tus valores.',base2:''},
+   momento:{mañana:'El amanecer invita a la práctica espiritual y el establecimiento de rituales.',tarde:'Comparte tu conocimiento o busca la sabiduría de alguien experimentado.',noche:'La noche es propicia para la reflexión sobre tus valores y creencias profundas.'}
+  },
+  {id:6,nombre:'Los Amantes',emoji:'💑',arcano:'Mayor',
+   sig:'Los Amantes representan la elección del corazón, la unión de opuestos complementarios y los compromisos profundos. Es la carta de las decisiones que definen quién eres en relación con el otro.',
+   inv:'Invertida, Los Amantes señalan conflicto de valores, decisiones eludidas o una relación que ha perdido su alineación sagrada. Puede indicar infidelidad o desequilibrio en los valores compartidos.',
+   signo:{aries:'Tu impulso pasional se encuentra con la profundidad de Los Amantes; elige con el corazón y la cabeza.',tauro:'Los Amantes confirman tu capacidad de crear vínculos duraderos y sensuales.',geminis:'Esta es tu carta maestra; Los Amantes hablan de la dualidad que defines mejor que nadie.',cancer:'Tu entrega emocional encuentra en Los Amantes la unión que tu alma busca.',leo:'Los Amantes amplían tu corazón generoso; ama con grandeza y lealtad.',virgo:'Los Amantes te piden que el corazón guíe donde la mente analiza demasiado.',libra:'Los Amantes son tu carta alma; el amor, la armonía y la elección del compañero son tu esencia.',escorpio:'Los Amantes tocan tu alma profunda; este vínculo tiene el potencial de una transformación total.',sagitario:'Los Amantes te piden compromiso; la aventura más grande es amar con profundidad.',capricornio:'Los Amantes suavizan tu pragmatismo; permite que el corazón tenga voto decisivo.',acuario:'Los Amantes te piden que bajes del plano intelectual y sientas el amor en el cuerpo.',piscis:'Los Amantes confirman tu capacidad de amar sin límites; recuerda también amarte a ti.'},
+   pos:{pasado:'Una elección del corazón o una unión significativa marcó tu historia.',futuro:'El futuro trae una decisión importante en el terreno de las relaciones o los valores.',consejo:'Elige desde la autenticidad; la decisión correcta es la que te acerca a ti mismo.',corazon_asunto:'El núcleo es el amor, la elección o la alineación de valores con otra persona.',resultado:'El resultado depende de la elección que hagas; hay más de un camino posible.',reto:'El desafío es tomar una decisión difícil que requiere honrar tanto el amor como los valores.',actitud:'Tu actitud está orientada al amor y a la conexión; buscas unión y armonía.',yo:'Estás en un momento de definir quién eres a través de tus elecciones en el amor.',entorno:'Tu entorno está influenciado por dinámicas de pareja y colaboración.',esperanza:'Deseas el amor verdadero y la unión plena; temes ser vulnerable o equivocarte.',potencial:'Tu potencial de crear un vínculo profundo y transformador es muy alto.',base:'Los cimientos de la situación incluyen una relación o una elección de valores.',vinculo:'El vínculo es el corazón de la tirada; hay una conexión profunda que definir o profundizar.',pareja:'La otra persona siente una conexión real y está considerando un compromiso más profundo.',presente:'Estás ante una encrucijada amorosa o una decisión de valores que te define.',base2:''},
+   momento:{mañana:'El amanecer es perfecto para aclarar lo que realmente quieres en el amor y en la vida.',tarde:'Expresa tus sentimientos con autenticidad; el corazón habla más claro a la luz del día.',noche:'La noche invita a la intimidad y a las conversaciones que cambian la vida.'}
+  },
+  {id:7,nombre:'El Carro',emoji:'🏆',arcano:'Mayor',
+   sig:'El Carro representa el triunfo de la voluntad sobre los obstáculos, el avance victorioso y el dominio de las fuerzas opuestas. Es la energía del éxito ganado con determinación y autodisciplina.',
+   inv:'Invertido, el Carro señala pérdida de control, agresividad contraproducente o un éxito que se alcanza a un costo demasiado alto. También puede indicar dirección equivocada o falta de enfoque.',
+   signo:{aries:'El Carro es tu carta esencia; este es tu momento de avanzar sin detenerte.',tauro:'El Carro te da impulso; combina tu constancia con su dinamismo para lograr victorias duraderas.',geminis:'El Carro te pide que elijas una dirección y la sostengas con determinación.',cancer:'El Carro te invita a avanzar aunque la emoción te pida retroceder; la victoria está al frente.',leo:'El Carro y tú sois aliados naturales; este triunfo fortalece tu liderazgo.',virgo:'El Carro celebra tu meticulosidad; el triunfo es el resultado de tu preparación impecable.',libra:'El Carro te pide que decidas y actúes; no hay victoria en el eterno equilibrio.',escorpio:'El Carro potencia tu determinación; usa este impulso para transformar lo que necesita cambiar.',sagitario:'El Carro da velocidad a tu visión; ahora puedes llegar lejos muy rápido.',capricornio:'El Carro confirma que tu disciplina da frutos; la meta está al alcance.',acuario:'El Carro te da el impulso para implementar tus ideas innovadoras en el mundo real.',piscis:'El Carro te ancla y te da dirección; usa esta energía para materializar tus sueños.'},
+   pos:{pasado:'Un período de lucha y avance determinado dejó huellas en tu presente.',futuro:'El futuro trae victorias si mantienes el enfoque y la determinación.',consejo:'Avanza con confianza; tienes lo que se necesita para superar los obstáculos.',corazon_asunto:'El núcleo es la lucha por el control, el avance y la superación de obstáculos.',resultado:'El resultado probable es victorioso si mantienes la dirección y la disciplina.',reto:'El desafío es mantener el control de fuerzas que pueden dispersarse o entrar en conflicto.',actitud:'Tu actitud es de determinación y voluntad; no estás dispuesto a rendirte.',yo:'Eres el conductor de tu propia vida; toma las riendas con conciencia.',entorno:'Tu entorno reconoce tu determinación y capacidad de superar adversidades.',esperanza:'Deseas triunfar; temes perder el control o que los obstáculos sean insuperables.',potencial:'Tu potencial de éxito y avance es muy alto cuando alineas voluntad y dirección.',base:'Los cimientos son sólidos; hay una historia de superación que te respalda.',vinculo:'El vínculo avanza; hay movimiento y dinámica que os lleva hacia adelante.',pareja:'La otra persona está en modo avance y puede que priorice sus metas propias ahora.',presente:'Estás en pleno avance; la energía favorece la acción decidida y el avance.',base2:''},
+   momento:{mañana:'La energía matutina es ideal para comenzar con determinación y dirección clara.',tarde:'Aprovecha el impulso del día para superar el obstáculo que más te frena.',noche:'Celebra el avance del día; el descanso también es parte del triunfo.'}
+  },
+  {id:8,nombre:'La Fuerza',emoji:'🦁',arcano:'Mayor',
+   sig:'La Fuerza representa el dominio de lo instintivo a través del amor y la gracia, no la represión. Es la valentía del corazón que puede con lo que la voluntad sola no puede: transformar desde la compasión.',
+   inv:'Invertida, la Fuerza señala debilidad ante los propios instintos, cobardía emocional o el uso de la fuerza bruta donde se necesita ternura. También puede indicar falta de fe en la propia capacidad.',
+   signo:{aries:'La Fuerza te invita a complementar tu valor con gentileza; la verdadera valentía abraza.',tauro:'Tu firmeza amorosa es la esencia de la Fuerza; confías en que la paciencia puede con todo.',geminis:'La Fuerza te pide que uses tu inteligencia para conectar, no para esquivar el conflicto.',cancer:'Tu ternura es tu fuerza más grande; no la confundas con debilidad.',leo:'Esta es tu carta más profunda; la Fuerza revela el corazón de oro detrás del rugido del león.',virgo:'La Fuerza te recuerda que el servicio amoroso es la mayor fortaleza.',libra:'La Fuerza te muestra que el equilibrio se mantiene desde adentro, no desde el esfuerzo externo.',escorpio:'La Fuerza transforma tu intensidad en poder amoroso; domina desde el corazón.',sagitario:'La Fuerza te pide que enfrentes tus miedos internos con la misma valentía que explores el mundo.',capricornio:'La Fuerza suaviza tu dureza; el liderazgo más poderoso viene del corazón.',acuario:'La Fuerza te invita a amar lo imperfecto; la humanidad incluye el caos instintivo.',piscis:'Tu compasión natural es la manifestación más pura de la Fuerza; confía en ella.'},
+   pos:{pasado:'En el pasado, la fortaleza interior o la compasión fueron determinantes.',futuro:'El futuro pide que enfrentes los desafíos con gracia y valentía de corazón.',consejo:'No luches con la fuerza bruta; transforma desde el amor y la paciencia.',corazon_asunto:'El núcleo implica el dominio de los propios instintos y miedos.',resultado:'El resultado será positivo si abordas la situación con fortaleza compasiva, no agresiva.',reto:'El desafío es no rendirse ante la presión ni reaccionar instintivamente.',actitud:'Tu actitud es de valentía serena; sabes que puedes con esto.',yo:'Estás desarrollando una fuerza interior que pocos pueden ver pero todos sienten.',entorno:'Tu entorno puede parecer hostil, pero tu presencia calmada lo transforma.',esperanza:'Deseas superar este desafío; temes no tener la fortaleza suficiente.',potencial:'Tu potencial de liderazgo compasivo y transformación desde el amor es enorme.',base:'Los cimientos incluyen recursos internos de fortaleza que quizás has subestimado.',vinculo:'El vínculo necesita compasión y paciencia para atravesar este momento.',pareja:'La otra persona enfrenta sus propios miedos; tu gentileza puede ser el puente.',presente:'Estás en un momento que pone a prueba tu fuerza interior; confía en ella.',base2:''},
+   momento:{mañana:'La quietud matutina te ayuda a conectar con tu fuerza interior antes de la batalla del día.',tarde:'Cuando sientas la presión aumentar, respira y recuerda que la fuerza viene de adentro.',noche:'La noche es para restaurar la fortaleza; duerme con paz sabiendo que puedes.'}
+  },
+  {id:9,nombre:'El Ermitaño',emoji:'🏔️',arcano:'Mayor',
+   sig:'El Ermitaño representa el camino de la introspección sabia, la búsqueda de la luz propia y la necesidad de retiro para encontrar las respuestas más profundas. Es la sabiduría ganada en soledad.',
+   inv:'Invertido, el Ermitaño señala aislamiento neurótico, rechazo al contacto humano necesario o una sabiduría que se volvió cínica. También puede indicar negativa a compartir la luz ganada.',
+   signo:{aries:'El Ermitaño te pide que hagas una pausa; la respuesta no está en la acción sino en el silencio.',tauro:'Tu amor por la naturaleza se profundiza con la sabiduría del Ermitaño; retírate y escucha.',geminis:'El Ermitaño te invita a profundizar en una sola verdad en lugar de explorar muchas superficialmente.',cancer:'El Ermitaño te ofrece un espacio seguro para procesar sin la influencia de otros.',leo:'El Ermitaño te invita a brillar hacia adentro; el reconocimiento exterior puede esperar.',virgo:'El Ermitaño honra tu amor por el análisis profundo; este retiro producirá claridad exquisita.',libra:'El Ermitaño te da permiso de estar solo con tus propias respuestas, sin buscar consenso.',escorpio:'El Ermitaño profundiza tu ya poderosa capacidad de introspección; la iluminación está cerca.',sagitario:'El Ermitaño te pide que te detengas en la búsqueda externa para encontrar la verdad interna.',capricornio:'El Ermitaño valida tu camino de disciplina solitaria; la montaña se escala paso a paso.',acuario:'El Ermitaño te pide que conectes con tu sabiduría interna antes de reformar el mundo.',piscis:'El Ermitaño es tu maestro interior; en el silencio encuentras lo que el ruido del mundo te oculta.'},
+   pos:{pasado:'Un período de soledad, búsqueda o maestría solitaria marcó tu camino.',futuro:'El futuro pide retiro, reflexión y la búsqueda de luz interior antes de actuar.',consejo:'Tómate el tiempo para estar solo con tus pensamientos; la sabiduría llegará.',corazon_asunto:'El núcleo es la búsqueda interior, la necesidad de guía propia y el discernimiento.',resultado:'El resultado trae claridad profunda si honras la necesidad de introspeccion.',reto:'El desafío es atravesar la soledad sin perderte en el aislamiento.',actitud:'Tu actitud es contemplativa e introspectiva; estás en modo de búsqueda interna.',yo:'Eres el sabio de tu propia historia; confía en tu luz interior.',entorno:'Tu entorno no siempre entiende tu necesidad de retiro; es válida de todas formas.',esperanza:'Deseas encontrar respuestas que sacien tu búsqueda profunda; temes la soledad.',potencial:'Tu potencial de sabiduría e iluminación es enorme cuando honras el camino interior.',base:'Los cimientos incluyen períodos de búsqueda y crecimiento en soledad.',vinculo:'El vínculo necesita espacio para que cada uno crezca individualmente.',pareja:'La otra persona también está en un proceso interno; respeta su necesidad de espacio.',presente:'Estás en un período de retiro sabio; confía en el proceso aunque se sienta solitario.',base2:''},
+   momento:{mañana:'El amanecer es tu momento de conexión con la guía interior; medita antes de hablar.',tarde:'Cuando el mundo tire de ti, recuerda tu centro; el Ermitaño lleva su luz consigo.',noche:'La noche es el territorio del Ermitaño; el sueño trae respuestas que el día niega.'}
+  },
+  {id:10,nombre:'La Rueda de la Fortuna',emoji:'☸️',arcano:'Mayor',
+   sig:'La Rueda de la Fortuna representa los ciclos inevitables del destino, los giros del azar y la consciencia de que todo cambia. Invita a fluir con el cambio y a reconocer los patrones que se repiten.',
+   inv:'Invertida, la Rueda señala resistencia al cambio, mala suerte que se perpetúa por no aprender la lección del ciclo, o un período de desafíos que exige adaptación.',
+   signo:{aries:'La Rueda gira a tu favor cuando usas tus ciclos bajos para preparar los altos.',tauro:'La Rueda te invita a soltar el apego; lo que se va prepara el espacio para algo mejor.',geminis:'La Rueda confirma lo que ya sabes: todo es transitorio; disfruta la danza del cambio.',cancer:'Los ciclos lunares de la Rueda resuenan con tu naturaleza; confía en las mareas.',leo:'La Rueda asegura que el reconocimiento llega y va; tu grandeza es constante aunque el escenario cambie.',virgo:'La Rueda te libera de la ilusión de control total; aprende a confiar en el proceso.',libra:'La Rueda trae el equilibrio a través del movimiento, no de la estasis.',escorpio:'La Rueda confirma que toda muerte lleva renacimiento; el ciclo trabaja a tu favor.',sagitario:'La Rueda amplifica tu fe en el destino; los giros favorables están llegando.',capricornio:'La Rueda te recuerda que incluso las cumbres tienen su bajada; planifica con visión cíclica.',acuario:'La Rueda confirma el cambio que promueves; el zeitgeist está a tu favor.',piscis:'La Rueda fluye con tu naturaleza acuática; nada contra la corriente solo cuando sea esencial.'},
+   pos:{pasado:'Un giro del destino, esperado o no, fue el catalizador de tu situación actual.',futuro:'El futuro trae un cambio significativo; prepárate para girar con la rueda.',consejo:'Fluye con el cambio en lugar de resistirte; el destino trabaja a tu favor cuando te alineas.',corazon_asunto:'El núcleo es el cambio, el destino y el ciclo que se cumple ahora.',resultado:'El resultado es un giro de fortuna; la dirección depende de cómo te posiciones.',reto:'El desafío es aprender la lección del ciclo para no repetirlo.',actitud:'Tu actitud ante el cambio define si la Rueda sube o baja para ti.',yo:'Estás en un punto de giro en tu historia; observa el ciclo con conciencia.',entorno:'Las circunstancias externas están cambiando independientemente de tu voluntad.',esperanza:'Deseas que la fortuna gire a tu favor; temes perder lo que has construido.',potencial:'Tu potencial se maximiza cuando te alineas con los ciclos naturales en lugar de resistirlos.',base:'Los cimientos están en movimiento; los cambios actuales tienen raíces en ciclos anteriores.',vinculo:'El vínculo atraviesa un punto de giro; puede profundizarse o transformarse significativamente.',pareja:'La otra persona también siente el giro del destino; hay un karma compartido aquí.',presente:'Estás en el punto más dinámico de tu ciclo actual; el cambio es inminente.',base2:''},
+   momento:{mañana:'El amanecer de un nuevo día es la Rueda girando; aprovecha el impulso fresco.',tarde:'Cuando el día cambie de ritmo, recuerda: la Rueda siempre gira.',noche:'La noche es el entre-ciclos; reflexiona sobre qué ciclo quieres iniciar mañana.'}
+  },
+  {id:11,nombre:'La Justicia',emoji:'⚖️',arcano:'Mayor',
+   sig:'La Justicia representa el equilibrio cósmico, la causa y el efecto, y las decisiones que se toman con claridad y ecuanimidad. Es la carta del karma que se cumple y del discernimiento que lleva a la verdad.',
+   inv:'Invertida, la Justicia señala injusticia, desequilibrio, evasión de responsabilidades o un juicio sesgado. Puede indicar problemas legales o dificultad para aceptar las consecuencias de las propias acciones.',
+   signo:{aries:'La Justicia equilibra tu impulsividad con la necesidad de evaluar consecuencias antes de actuar.',tauro:'La Justicia confirma que lo que has sembrado con paciencia ahora da sus frutos.',geminis:'La Justicia te pide claridad y honestidad antes de comunicar tu verdad.',cancer:'La Justicia te ayuda a establecer límites emocionales saludables y claros.',leo:'La Justicia te recuerda que el verdadero poder va de la mano con la responsabilidad.',virgo:'La Justicia honra tu amor por los detalles y la precisión; la verdad está en los datos.',libra:'La Justicia es tu carta esencial; tu amor por el equilibrio encuentra aquí su expresión máxima.',escorpio:'La Justicia revela las verdades ocultas que llevan tiempo en la sombra.',sagitario:'La Justicia afina tu búsqueda de verdad filosófica con la precisión del discernimiento.',capricornio:'La Justicia confirma que tu trabajo honesto recibe su justa recompensa.',acuario:'La Justicia amplifica tu compromiso con la igualdad y la reforma social.',piscis:'La Justicia te ayuda a salir del rol de mártir y reclamar lo que te corresponde.'},
+   pos:{pasado:'Una decisión justa o injusta, un proceso legal o un juicio marcó tu pasado.',futuro:'El futuro trae equilibrio y consecuencias proporcionales a tus acciones previas.',consejo:'Actúa con integridad en todo; el karma registra cada acción y pensamiento.',corazon_asunto:'El núcleo es el equilibrio, la verdad y la necesidad de tomar una decisión justa.',resultado:'El resultado es justo según las acciones tomadas; recibirás lo que has generado.',reto:'El desafío es ser completamente honesto, incluso cuando la verdad sea incómoda.',actitud:'Tu actitud busca el equilibrio y la claridad; quieres tomar la decisión correcta.',yo:'Eres el juez de tu propia situación; tu discernimiento es la clave.',entorno:'Tu entorno está evaluando la situación; hay un proceso de balance en marcha.',esperanza:'Deseas que prevalezca la justicia; temes que el sistema sea injusto contigo.',potencial:'Tu potencial de liderazgo justo e íntegro puede transformar tu entorno.',base:'Los cimientos incluyen decisiones previas cuyas consecuencias ahora se manifiestan.',vinculo:'El vínculo necesita honestidad y equilibrio para ser sostenible.',pareja:'La otra persona valora la equidad y la honestidad por encima de todo.',presente:'Estás en un momento de ajuste cósmico; las cuentas se están equilibrando.',base2:''},
+   momento:{mañana:'El amanecer trae claridad mental; es el mejor momento para tomar decisiones justas.',tarde:'Cuando surja un conflicto hoy, busca el equilibrio antes de reaccionar.',noche:'Reflexiona sobre si tus acciones del día fueron congruentes con tus valores.'}
+  },
+  {id:12,nombre:'El Colgado',emoji:'🔄',arcano:'Mayor',
+   sig:'El Colgado representa la sabiduría ganada a través de la rendición voluntaria, el sacrificio que trae iluminación y la capacidad de ver el mundo desde un ángulo completamente diferente.',
+   inv:'Invertido, el Colgado señala martirio inútil, resistencia a soltar lo que ya no sirve o sacrificios que no llevan a la iluminación sino al estancamiento.',
+   signo:{aries:'El Colgado te pide que pares; la acción ahora es contraproducente.',tauro:'Suelta el apego a lo conocido; el Colgado promete que la rendición trae revelación.',geminis:'El Colgado te pide que dejes de racionalizar y simplemente sientas la situación.',cancer:'La rendición que el Colgado te pide no es debilidad; es la forma más profunda de cuidado propio.',leo:'El Colgado te invita a soltar la necesidad de controlar el guión; deja que la vida te sorprenda.',virgo:'Suelta la necesidad de perfeccionar; el Colgado muestra que el proceso tiene su propia sabiduría.',libra:'El Colgado te pide que abandones el balance artificial y dejes que la vida encuentre su propio peso.',escorpio:'El Colgado es tu iniciación más profunda; en la rendición total está la transformación.',sagitario:'El Colgado detiene tu búsqueda exterior para darte la revelación interior que buscabas.',capricornio:'El Colgado te pide que sueltes el control para recibir una sabiduría que la acción no puede darte.',acuario:'El Colgado te invita a experimentar con la perspectiva más radical: la de la no-acción.',piscis:'El Colgado confirma tu capacidad de sacrificarte por algo más grande; asegúrate de que valga la pena.'},
+   pos:{pasado:'Un período de espera forzada, sacrificio o cambio de perspectiva fue clave en tu historia.',futuro:'El futuro pide que sueltes el control y confíes en un proceso mayor.',consejo:'Suelta lo que te aferras; la rendición consciente abre puertas que el esfuerzo cierra.',corazon_asunto:'El núcleo es la necesidad de soltar, esperar y ver la situación desde otro ángulo.',resultado:'El resultado trae revelación y liberación si aceptas el período de pausa necesario.',reto:'El desafío es aceptar la inacción temporal sin caer en el martirio o el victimismo.',actitud:'Tu actitud está en modo de espera; procesas sin actuar.',yo:'Estás en un período de transición y perspectiva cambiada.',entorno:'Tu entorno puede no entender tu pausa; no requiere explicaciones.',esperanza:'Deseas liberarte de lo que te ata; temes que la espera sea inútil.',potencial:'Tu potencial de sabiduría y perspectiva nueva es enorme tras este período de pausa.',base:'Los cimientos incluyen un período de pausa necesaria que está generando sabiduría.',vinculo:'El vínculo está en pausa; es tiempo de perspectiva, no de acción.',pareja:'La otra persona también está procesando; este silencio tiene propósito.',presente:'Estás suspendido entre dos realidades; confía en la sabiduría de este estado.',base2:''},
+   momento:{mañana:'La quietud matutina es el espejo del Colgado; observa sin actuar al despertar.',tarde:'Cuando el impulso de actuar sea máximo, practica la pausa consciente.',noche:'La noche del Colgado trae sueños reveladores; presta atención.'}
+  },
+  {id:13,nombre:'La Muerte',emoji:'🦋',arcano:'Mayor',
+   sig:'La Muerte raramente habla de muerte física; es la carta de la transformación radical, el cierre necesario y el renacimiento inevitable. Algo debe terminar para que algo nuevo pueda nacer.',
+   inv:'Invertida, la Muerte señala resistencia al cambio necesario, incapacidad de soltar el pasado o una transformación que se interrumpe por el miedo.',
+   signo:{aries:'La Muerte limpia el terreno para que tu energía pionera inicie algo completamente nuevo.',tauro:'La Muerte te pide que sueltes lo que ya no crece; hay nueva tierra fértil esperando.',geminis:'La Muerte transforma tu manera de pensar y comunicar; una versión tuya se renueva.',cancer:'La Muerte sana heridas profundas al cerrar ciclos que ya completaron su propósito.',leo:'La Muerte te invita a renacer en una versión de ti más auténtica y luminosa.',virgo:'La Muerte lleva a la perfección suprema: la purificación a través del fin de lo obsoleto.',libra:'La Muerte equilibra el ciclo; lo que termina crea el espacio para una nueva armonía.',escorpio:'Esta es tu carta maestra; eres el maestro de la muerte y el renacimiento.',sagitario:'La Muerte expande tu horizonte cerrando un capítulo; el próximo aventura es más grande.',capricornio:'La Muerte derrumba estructuras obsoletas para que construyas algo más sólido.',acuario:'La Muerte cataliza la revolución que llevas dentro; el viejo paradigma termina.',piscis:'La Muerte te libera de ciclos kármicos; el renacimiento espiritual que buscas está cerca.'},
+   pos:{pasado:'Un cierre radical o una transformación profunda fue el punto de inflexión de tu historia.',futuro:'El futuro trae el fin de un ciclo y el inicio de uno completamente nuevo.',consejo:'No temas el final; en cada cierre hay una semilla del próximo comienzo.',corazon_asunto:'El núcleo es la transformación radical y el cierre de un ciclo importante.',resultado:'El resultado es un renacimiento; algo termina definitivamente para que algo mejor nazca.',reto:'El desafío es aceptar el cierre sin resistencia y confiar en lo que viene.',actitud:'Tu actitud ante el cambio radical define la velocidad y calidad de tu renacimiento.',yo:'Estás atravesando una metamorfosis profunda; el resultado será una versión renovada.',entorno:'Tu entorno también está cambiando; los ciclos terminan a tu alrededor.',esperanza:'Deseas dejar atrás lo viejo; temes perder lo que te da seguridad.',potencial:'Tu potencial de renacimiento y transformación es ilimitado.',base:'Los cimientos de lo antiguo están cediendo para dejar espacio a lo nuevo.',vinculo:'El vínculo se transforma profundamente; puede terminar o renacer en forma diferente.',pareja:'La otra persona también está en un proceso de cambio profundo.',presente:'Estás en el umbral de una transformación mayor; el proceso ya ha comenzado.',base2:''},
+   momento:{mañana:'El amanecer representa el renacimiento diario; hoy, algo nuevo puede comenzar.',tarde:'La tarde es propicia para cerrar ciclos conscientemente y liberar lo que fue.',noche:'La noche simboliza la muerte simbólica; suelta el día y confía en el nuevo amanecer.'}
+  },
+  {id:14,nombre:'La Templanza',emoji:'🌊',arcano:'Mayor',
+   sig:'La Templanza representa el arte divino de la alquimia emocional, el equilibrio entre opuestos y la paciencia sagrada que transforma a través de la mezcla graduada de energías contrarias.',
+   inv:'Invertida, la Templanza señala desequilibrio, excesos, impaciencia o la mezcla incorrecta de energías que produce conflicto en lugar de armonía.',
+   signo:{aries:'La Templanza modera tu fuego; mezcla acción con reflexión para resultados más duraderos.',tauro:'La Templanza enriquece tu constancia con la capacidad de adaptar y ajustar el ritmo.',geminis:'La Templanza pide que equilibres tus polaridades; integra las partes que parecen opuestas.',cancer:'La Templanza te invita a mediar entre el corazón y la cabeza con sabiduría alquímica.',leo:'La Templanza añade fineza a tu grandeza; el matiz hace al maestro.',virgo:'La Templanza es tu arte; la mezcla precisa de elementos es donde brillas.',libra:'La Templanza confirma tu esencia; eres un alquimista del equilibrio.',escorpio:'La Templanza transforma tu intensidad en sabiduría profunda; la moderación te potencia.',sagitario:'La Templanza afina tu visión filosófica con la precisión del proceso graduado.',capricornio:'La Templanza añade flexibilidad a tu estructura; el buen líder sabe cuándo ceder.',acuario:'La Templanza integra tu visión de futuro con la sabiduría del presente.',piscis:'La Templanza te da el marco para que tu sensibilidad se exprese sin desbordarse.'},
+   pos:{pasado:'Un período de equilibrio y alquimia fue fundamental para tu transformación.',futuro:'El futuro pide paciencia y la mezcla cuidadosa de energías para crear algo nuevo.',consejo:'No te apresures; la alquimia real requiere tiempo y precisión.',corazon_asunto:'El núcleo es la necesidad de equilibrio, moderación y la mezcla sabia de energías.',resultado:'El resultado es la creación de algo nuevo a través de la integración de opuestos.',reto:'El desafío es mantener la paciencia cuando el proceso parece lento.',actitud:'Tu actitud es moderada y reflexiva; buscas el punto medio sagrado.',yo:'Eres un alquimista en proceso; la mezcla que creas tiene un propósito sagrado.',entorno:'Tu entorno necesita de tu capacidad mediadora y equilibradora.',esperanza:'Deseas encontrar el equilibrio perfecto; temes que los extremos te desgasten.',potencial:'Tu potencial de crear armonía y transformación alquímica es muy alto.',base:'Los cimientos se construyen sobre la integración de experiencias y energías diversas.',vinculo:'El vínculo se enriquece cuando ambos integran sus diferencias en lugar de luchar contra ellas.',pareja:'La otra persona aporta un elemento que complementa el tuyo; hay química real.',presente:'Estás en pleno proceso alquímico; la paciencia es la virtud más necesaria ahora.',base2:''},
+   momento:{mañana:'La calma matutina es ideal para integrar lo que el día anterior movió.',tarde:'La tarde pide moderar el ritmo; mezcla actividad con descanso conscientemente.',noche:'La noche es el tiempo de la alquimia interna; deja que los elementos se integren mientras duermes.'}
+  },
+  {id:15,nombre:'El Diablo',emoji:'🔗',arcano:'Mayor',
+   sig:'El Diablo revela los apegos, adicciones y cadenas que creemos externas pero que en realidad hemos construido nosotros mismos. La libertad comienza cuando reconocemos nuestros propios demonios sin miedo.',
+   inv:'Invertido, el Diablo señala el inicio de la liberación de un apego, la ruptura de una cadena o el reconocimiento de una adicción que puede ahora comenzar a sanar.',
+   signo:{aries:'El Diablo revela la adicción a la velocidad y el conflicto; la libertad está en la pausa.',tauro:'El Diablo señala el apego a la seguridad material como fuente de sufrimiento.',geminis:'El Diablo revela la adicción a la estimulación constante; la paz está en el silencio.',cancer:'El Diablo muestra cómo el apego emocional puede convertirse en cadena; ama sin aferrarte.',leo:'El Diablo revela la adicción al reconocimiento; tu valor no depende de la audiencia.',virgo:'El Diablo señala la adicción al perfeccionismo y la autocrítica; suelta el látigo.',libra:'El Diablo revela la dependencia de la aprobación ajena; tu criterio es suficiente.',escorpio:'El Diablo te muestra tus sombras más profundas; integrarlas es tu mayor poder.',sagitario:'El Diablo revela el apego a la libertad sin límites como forma de evitar el compromiso.',capricornio:'El Diablo señala la adicción al trabajo y al éxito como formas de evitar el interior.',acuario:'El Diablo revela el apego a las ideas propias como forma de evitar la conexión real.',piscis:'El Diablo muestra cómo la evasión y las adicciones son respuestas al dolor no procesado.'},
+   pos:{pasado:'Un apego, adicción o relación tóxica fue parte de tu historia formativa.',futuro:'El futuro trae la oportunidad de liberarse de una cadena que has llevado demasiado tiempo.',consejo:'Identifica el patrón que te limita; la toma de consciencia ya es el inicio de la libertad.',corazon_asunto:'El núcleo es un apego, adicción o sombra que necesita ser reconocida.',resultado:'El resultado depende de si eliges reconocer y trabajar tus cadenas o seguir en la inconsciencia.',reto:'El desafío es mirar de frente lo que prefieres no ver.',actitud:'Tu actitud puede estar condicionada por patrones inconscientes que vale la pena examinar.',yo:'Estás en contacto con tu sombra; integrarla es la tarea.',entorno:'Tu entorno puede estar reflejando tus patrones no resueltos.',esperanza:'Deseas liberarte pero temes lo que encontrarás al mirar de frente.',potencial:'Tu potencial de transformación es máximo cuando integras la sombra en lugar de negarla.',base:'Los cimientos incluyen patrones o apegos que han estado operando desde abajo de la conciencia.',vinculo:'El vínculo puede tener dinámicas de dependencia que conviene examinar honestamente.',pareja:'La otra persona puede estar atrapada en sus propios patrones; la honestidad es la llave.',presente:'Estás cara a cara con tu sombra; este reconocimiento es el primer paso de la libertad.',base2:''},
+   momento:{mañana:'La claridad del amanecer ayuda a ver los patrones con menos dramatismo.',tarde:'Cuando el apego se active, obsérvalo sin actuar desde él.',noche:'La noche es propicia para el trabajo de sombra; escribe lo que normalmente negarías.'}
+  },
+  {id:16,nombre:'La Torre',emoji:'⚡',arcano:'Mayor',
+   sig:'La Torre representa la destrucción repentina de lo que se construyó sobre bases falsas. Es el rayo purificador que, aunque doloroso, libera de ilusiones y permite construir sobre verdad sólida.',
+   inv:'Invertida, la Torre señala el miedo a un cambio disruptivo necesario, una crisis que se prolonga por resistencia o la evitación de una verdad que, de todas formas, terminará saliendo.',
+   signo:{aries:'La Torre derrumba obstáculos que impedían tu camino; el caos es tu terreno fértil.',tauro:'La Torre destruye la falsa seguridad; lo que queda es lo verdaderamente sólido.',geminis:'La Torre derrumba ideas obsoletas para que tu mente pueda abrazar nuevas verdades.',cancer:'La Torre sacude tu mundo emocional; lo que sobrevive es el amor verdadero.',leo:'La Torre derrumba el ego que no sirve; lo que queda es el verdadero oro de tu ser.',virgo:'La Torre destruye sistemas que ya no funcionan; la reconstrucción será más perfecta.',libra:'La Torre derrumba el equilibrio artificial; el nuevo equilibrio será más auténtico.',escorpio:'La Torre es tu terreno natural; sabes mejor que nadie cómo renacer de las ruinas.',sagitario:'La Torre destruye creencias limitantes disfrazadas de verdades filosóficas.',capricornio:'La Torre derrumba lo construido sobre arena; los cimientos verdaderos son los que importan.',acuario:'La Torre acelera la revolución que llevas dentro; el sistema viejo cae para que el nuevo llegue.',piscis:'La Torre disuelve ilusiones; la realidad que emerge es más auténtica y nutritiva.'},
+   pos:{pasado:'Una crisis o ruptura repentina fue un punto de inflexión que no elegiste pero que necesitabas.',futuro:'El futuro puede traer una sacudida liberadora; prepárate para soltar lo que cae.',consejo:'No construyas sobre bases falsas; mejor una crisis ahora que un derrumbe mayor después.',corazon_asunto:'El núcleo es una disrupción necesaria que derrumba lo que no tenía bases sólidas.',resultado:'El resultado es la liberación a través del derrumbe; lo que queda en pie es lo real.',reto:'El desafío es no entrar en pánico ante el derrumbe y confiar en el proceso.',actitud:'Tu actitud ante el caos define si lo vives como catástrofe o como liberación.',yo:'Estás en medio o a punto de una sacudida que cambiará tu perspectiva.',entorno:'Tu entorno está experimentando cambios disruptivos que te afectan.',esperanza:'Deseas que la crisis termine; temes que las pérdidas sean permanentes.',potencial:'Tu potencial de reconstruir algo más sólido y auténtico es enorme tras el derrumbe.',base:'Los cimientos tenían grietas que ahora se hacen visibles; la reparación es posible.',vinculo:'El vínculo pasa por una crisis que revelará si los cimientos son sólidos o no.',pareja:'La otra persona también está atravesando una sacudida; la honestidad es urgente.',presente:'Estás en medio de la tormenta; recuerda que los rayos también iluminan.',base2:''},
+   momento:{mañana:'El amanecer tras la tormenta siempre trae más claridad; confía en la renovación.',tarde:'Cuando el caos parezca máximo, busca el ojo del huracán: tu centro de calma.',noche:'La noche de la Torre es intensa; no tomes decisiones permanentes en el pico emocional.'}
+  },
+  {id:17,nombre:'La Estrella',emoji:'⭐',arcano:'Mayor',
+   sig:'La Estrella representa la esperanza renovada después de la tormenta, la fe en el futuro y el flujo generoso de energía cósmica que nutre el alma y restaura la confianza en la vida.',
+   inv:'Invertida, la Estrella señala pérdida de esperanza, desconexión espiritual o una fe que necesita ser renovada. También puede indicar dificultad para recibir el cuidado y el amor que el universo ofrece.',
+   signo:{aries:'La Estrella renueva tu fe en el camino que has elegido; sigue avanzando.',tauro:'La Estrella confirma que la abundancia que siembras dará frutos bellos y duraderos.',geminis:'La Estrella te recuerda que hay verdades más profundas que la mente puede alcanzar.',cancer:'La Estrella restaura tu corazón sensible; eres amado por el universo.',leo:'La Estrella amplifica tu luz natural; comparte tu brillo sin miedo ni reservas.',virgo:'La Estrella te invita a confiar en el proceso aunque no puedas controlar cada detalle.',libra:'La Estrella trae la armonía que buscas; la belleza del universo está disponible para ti.',escorpio:'La Estrella es la esperanza que emerge después de tu transformación más profunda.',sagitario:'La Estrella confirma tu fe en el universo; el camino que exploras tiene sentido.',capricornio:'La Estrella te recuerda que hay recompensas más allá del trabajo duro: la gracia.',acuario:'La Estrella ilumina tu visión humanitaria; el futuro que sueñas es posible.',piscis:'La Estrella es tu casa; tu conexión con la gracia cósmica es uno de tus dones más preciosos.'},
+   pos:{pasado:'Una experiencia de gracia, esperanza o renovación fue sanadora en tu historia.',futuro:'El futuro trae renovación, esperanza y una conexión más profunda con tu propósito.',consejo:'Confía en el universo; la ayuda que necesitas viene cuando te abres a recibirla.',corazon_asunto:'El núcleo es la esperanza, la renovación y la conexión con algo más grande que tú.',resultado:'El resultado es positivo y lleno de esperanza; la gracia está contigo.',reto:'El desafío es mantener la fe incluso cuando las circunstancias la ponen a prueba.',actitud:'Tu actitud es abierta y esperanzadora; ves el potencial en cada situación.',yo:'Eres un canal de luz y esperanza; permítete también recibirlas.',entorno:'Tu entorno se beneficia de tu capacidad de mantener la esperanza y la visión.',esperanza:'Deseas sentirte guiado y amado por algo más grande; confías en que llegará.',potencial:'Tu potencial de ser un faro de esperanza para otros y para ti mismo es ilimitado.',base:'Los cimientos incluyen experiencias de gracia y renovación que te han sostenido.',vinculo:'El vínculo tiene la bendición de las estrellas; hay un componente kármico positivo.',pareja:'La otra persona trae luz y renovación a tu vida; confía en esta conexión.',presente:'Estás bajo la influencia de la Estrella; la gracia y la esperanza son tus aliadas ahora.',base2:''},
+   momento:{mañana:'El amanecer bajo las estrellas que se apagan es tu momento de renovar la esperanza.',tarde:'La luz del día refleja la Estrella interior; comparte tu brillo con generosidad.',noche:'La noche estrellada te conecta con el cosmos; medita bajo el cielo abierto.'}
+  },
+  {id:18,nombre:'La Luna',emoji:'🌛',arcano:'Mayor',
+   sig:'La Luna representa el reino de los sueños, las ilusiones y el inconsciente profundo. Ilumina los miedos ancestrales, los engaños y los ciclos emocionales que operan desde las sombras.',
+   inv:'Invertida, la Luna señala el inicio de la claridad tras la confusión, la superación de ilusiones o el fin de un período de engaño.',
+   signo:{aries:'La Luna modera tu claridad habitual; acepta que no todo puede conocerse racionalmente.',tauro:'La Luna activa tu intuición más allá de los sentidos físicos; escucha lo que sientes.',geminis:'La Luna revela que hay más verdad en lo que no se dice que en lo que se expresa.',cancer:'La Luna es tu planeta regente; estás en tu elemento más profundo y poderoso.',leo:'La Luna te invita a explorar tu mundo interior con la misma valentía que el exterior.',virgo:'La Luna disuelve la ilusión de control; confía en el proceso aunque no lo veas claramente.',libra:'La Luna revela las dinámicas ocultas en tus relaciones; escucha más allá de las palabras.',escorpio:'La Luna ilumina tu sombra más profunda; este conocimiento es tu mayor poder.',sagitario:'La Luna te pide que explores el territorio interior con la misma aventura que el exterior.',capricornio:'La Luna disuelve certezas; acepta que el camino es a veces nocturno y misterioso.',acuario:'La Luna conecta tu mente con el inconsciente colectivo; presta atención a los patrones.',piscis:'La Luna es tu territorio sagrado; tus sueños y visiones tienen información valiosa.'},
+   pos:{pasado:'Confusión, ilusión o el mundo de los sueños jugó un papel en tu pasado.',futuro:'El futuro pide que navegues con intuición en aguas oscuras e inciertas.',consejo:'No todo lo que ves es lo que es; confía en la intuición más que en las apariencias.',corazon_asunto:'El núcleo implica confusión, ilusión o dinámicas inconscientes que necesitan luz.',resultado:'El resultado emerge gradualmente desde la neblina; la paciencia es indispensable.',reto:'El desafío es distinguir entre el miedo irracional y la intuición real.',actitud:'Tu actitud está influenciada por miedos e ilusiones; examínalos con compasión.',yo:'Estás en contacto profundo con tu mundo inconsciente en este momento.',entorno:'Tu entorno no es completamente lo que aparenta; hay dinámicas ocultas operando.',esperanza:'Deseas claridad; temes que la confusión no termine.',potencial:'Tu potencial de acceder a sabiduría inconsciente e intuitiva es enorme.',base:'Los cimientos incluyen patrones emocionales inconscientes que ahora emergen.',vinculo:'El vínculo tiene una dimensión misteriosa y no completamente visible.',pareja:'La otra persona puede no estar mostrando todo lo que siente o piensa.',presente:'Estás en un período de neblina y misterio; navega con intuición.',base2:''},
+   momento:{mañana:'Los sueños de la noche traen información valiosa; anótalos al despertar.',tarde:'Cuando algo no cuadre hoy, confía en tu instinto más que en las explicaciones.',noche:'La noche de luna es tu momento más poderoso de conexión intuitiva.'}
+  },
+  {id:19,nombre:'El Sol',emoji:'☀️',arcano:'Mayor',
+   sig:'El Sol representa la plenitud consciente, la alegría auténtica y el éxito brillante. Es la carta de la claridad total, la vitalidad desbordante y el reconocimiento que viene de ser completamente uno mismo.',
+   inv:'Invertido, el Sol señala alegría bloqueada, arrogancia que oculta la inseguridad o un período de baja energía y falta de perspectiva positiva.',
+   signo:{aries:'El Sol amplifica tu energía vital; este es tu momento de máximo brillo y acción.',tauro:'El Sol ilumina tus talentos naturales; comparte tu abundancia con generosidad.',geminis:'El Sol ilumina tu mente brillante; comunica tu verdad con alegría y claridad.',cancer:'El Sol calienta tu corazón nutrido; la alegría y el amor fluyen libremente.',leo:'El Sol es tu carta esencia; este es tu momento de máxima expresión y reconocimiento.',virgo:'El Sol ilumina tu servicio; el reconocimiento por tu trabajo impecable llega ahora.',libra:'El Sol ilumina tus relaciones; la armonía y la belleza brillan en tu vida.',escorpio:'El Sol revela lo que estaba en sombra; la transformación produce ahora frutos luminosos.',sagitario:'El Sol amplifica tu visión y entusiasmo; el mundo está abierto para ti.',capricornio:'El Sol reconoce tu trabajo y disciplina; el éxito tangible llega ahora.',acuario:'El Sol ilumina tu visión de futuro; el mundo está listo para tus ideas innovadoras.',piscis:'El Sol clarifica tus sueños; la manifestación de lo que soñaste está al alcance.'},
+   pos:{pasado:'Un período de éxito, alegría y claridad fue fundamental en tu historia.',futuro:'El futuro trae éxito, alegría y el reconocimiento de tu valor y talentos.',consejo:'Brilla sin disculparte; tu luz es un regalo para ti y para quienes te rodean.',corazon_asunto:'El núcleo es la alegría, el éxito y la claridad; las cosas están mejor de lo que parece.',resultado:'El resultado es positivo y luminoso; el éxito está en camino.',reto:'El desafío es mantener la humildad en el éxito y la generosidad en la abundancia.',actitud:'Tu actitud es positiva, clara y llena de confianza; ves el potencial en todo.',yo:'Estás en un período de máxima vitalidad y claridad personal.',entorno:'Tu entorno responde positivamente a tu energía; hay apoyo y reconocimiento.',esperanza:'Deseas el éxito y el reconocimiento; confías en que llegará.',potencial:'Tu potencial de éxito y realización es máximo bajo la influencia del Sol.',base:'Los cimientos son sólidos y luminosos; hay energía positiva sosteniéndote.',vinculo:'El vínculo está lleno de luz, alegría y posibilidades positivas.',pareja:'La otra persona trae calidez, alegría y una energía vital desbordante.',presente:'Estás en un período de máxima claridad y vitalidad; aprovecha esta energía.',base2:''},
+   momento:{mañana:'El Sol matutino es tu aliado; comienza el día con gratitud y entusiasmo.',tarde:'La energía solar de la tarde es perfecta para acciones que requieren confianza y visibilidad.',noche:'Cierra el día con gratitud por la luz que recibiste; el Sol siempre vuelve.'}
+  },
+  {id:20,nombre:'El Juicio',emoji:'📯',arcano:'Mayor',
+   sig:'El Juicio representa el despertar espiritual, el llamado a una nueva vida y la evaluación honesta del camino recorrido. Es la oportunidad de dejar el pasado atrás y responder al llamado del alma.',
+   inv:'Invertido, el Juicio señala resistencia al despertar, incapacidad de perdonarse a uno mismo o la parálisis ante el llamado a un cambio de vida.',
+   signo:{aries:'El Juicio llama a tu espíritu guerrero a una misión más elevada.',tauro:'El Juicio te invita a dejar atrás lo que ya no crece para responder a un llamado mayor.',geminis:'El Juicio aclara cuál de tus múltiples caminos es el verdadero llamado de tu alma.',cancer:'El Juicio sana heridas del pasado y te libera para un nuevo capítulo lleno de amor.',leo:'El Juicio te llama a un escenario más grande; tu propósito trasciende el ego.',virgo:'El Juicio te libera del perfeccionismo; eres suficiente para responder al llamado.',libra:'El Juicio trae la resolución del conflicto que buscabas; el equilibrio llega desde adentro.',escorpio:'El Juicio culmina tu ciclo de muerte y renacimiento; el llamado del alma es claro.',sagitario:'El Juicio amplifica tu búsqueda de sentido; la respuesta que buscas está dentro.',capricornio:'El Juicio reconoce tu camino de disciplina y te invita a una cima más alta.',acuario:'El Juicio te llama a liderar la transformación que has visionado; es el momento.',piscis:'El Juicio disuelve el karma acumulado; la gracia te eleva a una nueva octava.'},
+   pos:{pasado:'Un llamado, un despertar o una evaluación profunda marcó un punto de inflexión.',futuro:'El futuro trae un despertar espiritual o un llamado claro a una nueva vida.',consejo:'Responde al llamado de tu alma; no hay segundas oportunidades de este nivel.',corazon_asunto:'El núcleo es el despertar, el perdón y la respuesta al llamado de una vida más elevada.',resultado:'El resultado es la liberación y el inicio de un nuevo capítulo en un nivel más alto.',reto:'El desafío es perdonarte a ti mismo y soltar el peso del pasado para poder elevarte.',actitud:'Tu actitud está orientada hacia el despertar y la transformación espiritual.',yo:'Estás en un momento de despertar y llamado; escucha tu alma.',entorno:'Tu entorno también está respondiendo a una transformación colectiva más grande.',esperanza:'Deseas ser perdonado y elevarte; confías en la posibilidad de comenzar de nuevo.',potencial:'Tu potencial de despertar espiritual y transformación de vida es enorme.',base:'Los cimientos incluyen un camino recorrido que ahora puede ser evaluado y trascendido.',vinculo:'El vínculo atraviesa una transformación espiritual; ambos son llamados a evolucionar.',pareja:'La otra persona está también respondiendo a un llamado de crecimiento profundo.',presente:'Estás ante el gran llamado de tu alma; este es el momento de responder.',base2:''},
+   momento:{mañana:'El amanecer es tu llamado diario; comienza el día desde el alma, no desde el hábito.',tarde:'Cuando sientas el llamado del propósito, detente y escúchalo; es tu brújula.',noche:'La noche del Juicio invita a evaluar el día desde el alma; ¿actuaste desde lo más alto?'}
+  },
+  {id:21,nombre:'El Mundo',emoji:'🌍',arcano:'Mayor',
+   sig:'El Mundo representa la culminación exitosa de un ciclo, la integración total y la celebración del camino recorrido. Es la maestría ganada, el logro completo y la preparación para el próximo gran ciclo.',
+   inv:'Invertido, el Mundo señala ciclos incompletos, dificultad para cerrar etapas o el éxito que se retrasa por resistencias internas.',
+   signo:{aries:'El Mundo corona tu ciclo de conquistas; prepárate para el próximo horizonte.',tauro:'El Mundo celebra la abundancia que has cultivado con paciencia; lo lograste.',geminis:'El Mundo integra todas tus facetas en una síntesis brillante y completa.',cancer:'El Mundo reconoce el amor y el cuidado que has dado; ahora recibes la recompensa.',leo:'El Mundo te entrega el escenario mundial; tu tiempo de mayor reconocimiento ha llegado.',virgo:'El Mundo celebra tu trabajo impecable; la perfección que buscabas se ha manifestado.',libra:'El Mundo trae la armonía total que siempre has buscado; el equilibrio se alcanzó.',escorpio:'El Mundo es el resultado de tu profunda transformación; la maestría es tuya.',sagitario:'El Mundo amplía tu horizonte al máximo; el viaje que emprendiste te ha traído aquí.',capricornio:'El Mundo es la cima que escalarste con disciplina; el éxito es completo y merecido.',acuario:'El Mundo reconoce tu contribución a la humanidad; el cambio que soñaste ha llegado.',piscis:'El Mundo es la disolución del yo en el Todo; la trascendencia que buscabas es real.'},
+   pos:{pasado:'Un gran logro, culminación o integración marcó un período de tu historia.',futuro:'El futuro trae la culminación exitosa de lo que has trabajado; el éxito está cerca.',consejo:'Celebra lo que has logrado; honrar el camino recorrido es parte del ciclo.',corazon_asunto:'El núcleo es la culminación, el logro y la integración total de una etapa.',resultado:'El resultado es el éxito completo y la satisfacción del deber cumplido.',reto:'El desafío es cerrar bien el ciclo antes de iniciar el siguiente.',actitud:'Tu actitud es de logro, integración y celebración; ves el camino con satisfacción.',yo:'Estás en el punto de mayor integración y maestría de este ciclo.',entorno:'Tu entorno reconoce y celebra tus logros.',esperanza:'Deseas culminar este ciclo con éxito; confías en que es posible.',potencial:'Tu potencial de culminación y maestría está completamente disponible.',base:'Los cimientos son sólidos; has construido algo real y valioso.',vinculo:'El vínculo alcanza un punto de madurez y completitud en este momento.',pareja:'La otra persona aporta la pieza que completa el rompecabezas de la relación.',presente:'Estás en el punto de mayor plenitud de este ciclo; celebra y prepárate para el próximo.',base2:''},
+   momento:{mañana:'El amanecer del Mundo es la invitación a iniciar el día desde la plenitud.',tarde:'La tarde del Mundo es perfecta para celebrar logros y compartir el éxito.',noche:'La noche del Mundo invita a la gratitud y al cierre consciente del ciclo.'}
+  },
+
+  // ── MENORES - BASTOS (fire) ──
+  {id:22,nombre:'As de Bastos',emoji:'🔥',arcano:'Menor',palo:'Bastos',
+   sig:'El inicio de una empresa apasionada, la chispa creativa que puede convertirse en llama. Es el impulso original, la inspiración que pide ser actuada.',
+   inv:'Retrasos en el inicio, bloqueos creativos o un proyecto que no termina de arrancar. La energía está, pero necesita dirección.',
+   signo:{aries:'Esta chispa es tuya naturalmente; actúa antes de que se enfríe.',tauro:'La chispa requiere tu constancia para convertirse en fuego duradero.',geminis:'Esta inspiración pide ser comunicada; comparte la idea.',cancer:'La pasión que sientes tiene raíces emocionales profundas; honra ese origen.',leo:'Esta es la chispa que enciende tu próximo gran proyecto; muéstrate.',virgo:'Planifica cómo esta energía creativa puede ser canalizada eficientemente.',libra:'Comparte esta inspiración con alguien que la complemente.',escorpio:'Esta chispa tiene la intensidad para transformar algo importante.',sagitario:'El nuevo horizonte que se abre es perfectamente alineado con tu espíritu.',capricornio:'Canaliza esta energía hacia un objetivo concreto y medible.',acuario:'Esta inspiración tiene el potencial de cambiar algo para muchos.',piscis:'La chispa conecta con tu imaginación; dale forma antes de que se disuelva.'},
+   pos:{pasado:'Una chispa inicial creó el momentum de tu situación actual.',futuro:'Un nuevo inicio apasionado está llegando; prepárate para encender el fuego.',consejo:'Actúa sobre la inspiración ahora; las chispas se apagan si no se alimentan.',corazon_asunto:'La esencia del asunto es el potencial de algo nuevo y emocionante.',resultado:'El resultado trae el inicio de algo que te apasiona.',reto:'El desafío es no perder el impulso inicial en el camino.',actitud:'Estás lleno de energía y potencial creativo.',yo:'Eres la chispa que inicia el cambio.',entorno:'Tu entorno está listo para el nuevo proyecto que traes.',esperanza:'Deseas comenzar algo nuevo y apasionante.',potencial:'Tu potencial creativo es ilimitado.',base:'Los cimientos son el entusiasmo y la visión.',vinculo:'El vínculo comienza con una chispa irresistible.',pareja:'Hay una atracción poderosa y espontánea.',presente:'El momento pide acción sobre la inspiración.', base2:''},
+   momento:{mañana:'¡Actúa sobre esa idea que tienes desde el amanecer!',tarde:'La tarde amplifica el fuego de la inspiración.',noche:'La noche es para visualizar el fuego que encenderás mañana.'}
+  },
+  {id:23,nombre:'Dos de Bastos',emoji:'🌐',arcano:'Menor',palo:'Bastos',
+   sig:'La planificación de un horizonte más amplio. Tienes el mundo en las manos y estás decidiendo hacia dónde dirigir tu energía y visión.',
+   inv:'Indecisión, miedo al compromiso con una dirección o planes que se quedan en el papel sin ejecutarse.',
+   signo:{aries:'El mundo es tuyo; solo necesitas elegir el primer paso.',tauro:'Planifica bien; la paciencia aplicada a esta visión dará frutos sólidos.',geminis:'Múltiples caminos se abren; es momento de elegir el que más te enciende.',cancer:'Confía en la visión que tu intuición ya te ha mostrado.',leo:'Tu grandeza merece un escenario mayor; expande tu visión.',virgo:'Detalla el plan antes de ejecutar; la precisión aquí te ahorra tiempo.',libra:'Consulta con un aliado antes de decidir la dirección.',escorpio:'La visión que tienes tiene una profundidad que los demás no ven aún.',sagitario:'El horizonte que ves es real; ve a por él con confianza.',capricornio:'Construye el plan a largo plazo; esta visión es la base de algo grande.',acuario:'La innovación que planeas puede cambiar el paradigma.',piscis:'La visión es hermosa; asegúrate de darle pies para caminar.'},
+   pos:{pasado:'La planificación y la visión de largo plazo fueron decisivas en tu trayectoria.',futuro:'Se abren posibilidades de expansión significativa; elige con intención.',consejo:'Amplía tu perspectiva; hay más posibilidades de las que ves desde donde estás.',corazon_asunto:'El núcleo es la planificación de un camino más amplio.',resultado:'El resultado implica expansión si te comprometes con una dirección clara.',reto:'El desafío es comprometerse con una visión y ejecutarla.',actitud:'Estás en modo estratégico; ves el panorama general.',yo:'Eres el estratega que sostiene la visión a largo plazo.',entorno:'Tu entorno espera que tomes el liderazgo de la dirección.',esperanza:'Deseas expandirte hacia algo más grande.',potencial:'Tu potencial de liderazgo y visión es considerable.',base:'Los cimientos incluyen una perspectiva amplia y recursos para expandirse.',vinculo:'El vínculo tiene potencial de crecer hacia algo más serio y comprometido.',pareja:'La otra persona también está considerando un futuro contigo.',presente:'Ahora es el momento de diseñar el camino que quieres recorrer.',base2:''},
+   momento:{mañana:'Diseña el mapa de tu día como si fuera el mapa de tu vida.',tarde:'La claridad de la tarde es ideal para revisar y refinar tus planes.',noche:'Visualiza el horizonte hacia el que te diriges; clarifica tu norte.'}
+  },
+  // Continuing minor arcana (abbreviated for space, but with full structure)
+  {id:24,nombre:'Tres de Bastos',emoji:'⛵',arcano:'Menor',palo:'Bastos',
+   sig:'Los primeros resultados de tus esfuerzos empiezan a llegar. Es el momento de observar desde la altura lo que has iniciado y esperar los frutos de tu trabajo con confianza.',
+   inv:'Retrasos inesperados, planes que no se materializan o frustración ante resultados que tardan más de lo esperado.',
+   signo:{aries:'Tus primeras conquistas están llegando; confía en el proceso.',tauro:'La cosecha se acerca; tu paciencia está a punto de ser recompensada.',geminis:'Las ideas que lanzaste están germinando en lugares que aún no ves.',cancer:'Confía en el proceso aunque no veas aún los frutos.',leo:'El reconocimiento de tu trabajo creativo está en camino.',virgo:'Los resultados de tu trabajo meticuloso comienzan a manifestarse.',libra:'Los proyectos colaborativos inician su fase de expansión.',escorpio:'Lo que sembraste en profundidad ahora crece en la superficie.',sagitario:'El horizonte que buscabas está más cerca de lo que crees.',capricornio:'Los resultados de tu disciplina comienzan a ser visibles; sigue.',acuario:'Las semillas de tu visión innovadora están germinando.',piscis:'Lo que imaginaste y sembraste comienza a tomar forma tangible.'},
+   pos:{pasado:'El trabajo previo está dando sus primeros frutos.',futuro:'Llegarán resultados positivos de los esfuerzos actuales.',consejo:'Observa desde la distancia y confía en el proceso en marcha.',corazon_asunto:'El núcleo es la expansión y los primeros frutos del esfuerzo.',resultado:'El resultado es positivo; los proyectos se expanden.',reto:'El desafío es mantener la paciencia mientras los resultados maduran.',actitud:'Confías en el proceso y en los resultados que vienen.',yo:'Eres quien ha plantado las semillas y ahora observa.',entorno:'Tu entorno responde positivamente a tus iniciativas.',esperanza:'Deseas ver los frutos de tu trabajo; confías en que llegará.',potencial:'Tu potencial de expansión y crecimiento es alto.',base:'Los cimientos son el trabajo realizado con determinación.',vinculo:'El vínculo se expande hacia un nuevo horizonte juntos.',pareja:'Hay un futuro posible que ambos están comenzando a ver.',presente:'Los primeros resultados de tu trabajo son visibles ahora.',base2:''},
+   momento:{mañana:'Observa qué semillas de ayer empiezan a brotar hoy.',tarde:'La tarde muestra los primeros resultados del trabajo matutino.',noche:'Cuenta las pequeñas victorias del día; son los frutos de tu siembra.'}
+  },
+  {id:25,nombre:'Cuatro de Bastos',emoji:'🎊',arcano:'Menor',palo:'Bastos',
+   sig:'Celebración merecida, estabilidad en los proyectos creativos y la alegría de un hogar o comunidad sólida. Es la energía de la fiesta que celebra el trabajo bien hecho.',
+   inv:'Inestabilidad en el hogar, celebraciones pospuestas o una sensación de que la alegría es incompleta.',
+   signo:{aries:'Celebra este hito; te lo has ganado.',tauro:'La estabilidad que has construido merece ser celebrada con los tuyos.',geminis:'Comparte esta alegría con quienes han estado contigo en el camino.',cancer:'El hogar y la familia son el escenario perfecto para esta celebración.',leo:'Tu éxito merece un momento de brillo compartido con los demás.',virgo:'El trabajo impecable merece su celebración; concédetela.',libra:'Celebra la armonía alcanzada en tus relaciones y proyectos.',escorpio:'La transformación lograda merece este momento de celebración.',sagitario:'Celebra antes de emprender el próximo viaje; el cuerpo también necesita fiesta.',capricornio:'El logro material alcanzado merece ser reconocido y celebrado.',acuario:'Celebra con tu comunidad; los logros compartidos son más dulces.',piscis:'Permítete sentir la alegría sin añadir complejidad; simplemente celebra.'},
+   pos:{pasado:'Una celebración, logro o período de estabilidad marcó tu pasado.',futuro:'El futuro trae motivos de celebración y un período de estabilidad gozosa.',consejo:'Celebra los logros; el reconocimiento propio es tan importante como el externo.',corazon_asunto:'El núcleo es la celebración, la estabilidad y la alegría compartida.',resultado:'El resultado es positivo: hay motivos concretos de celebración.',reto:'El desafío es permitirte celebrar sin sentirte culpable.',actitud:'Tu actitud es festiva y agradecida; reconoces el camino recorrido.',yo:'Eres quien merece y crea el espacio de celebración.',entorno:'Tu entorno celebra contigo; hay apoyo y alegría compartida.',esperanza:'Deseas sentir la alegría del logro y compartirla.',potencial:'Tu potencial de crear alegría y estabilidad es alto.',base:'Los cimientos son sólidos: hay una base de trabajo y comunidad.',vinculo:'El vínculo celebra un hito importante; hay alegría compartida.',pareja:'La otra persona está lista para celebrar contigo un momento especial.',presente:'Estás en un momento de celebración merecida; disfrútalo sin reservas.',base2:''},
+   momento:{mañana:'Comienza el día con gratitud; ya tienes razones para celebrar.',tarde:'Comparte la alegría del trabajo bien hecho con alguien especial.',noche:'La noche es perfecta para la celebración y el reconocimiento compartido.'}
+  },
+  {id:26,nombre:'Cinco de Bastos',emoji:'⚔️',arcano:'Menor',palo:'Bastos',
+   sig:'El conflicto de ideas, la competencia que estimula o la confusión de múltiples fuerzas que buscan expresarse simultáneamente. A veces la lucha es el proceso necesario para clarificar la dirección.',
+   inv:'Conflicto evitado que se vuelve interno, competencia desleal o una lucha que ya no tiene propósito pero continúa por inercia.',
+   signo:{aries:'La competencia te estimula; usa esta energía para superarte, no para destruir.',tauro:'El conflicto es temporal; tu constancia ganará la partida.',geminis:'El debate de ideas puede ser productivo si buscas síntesis, no victoria.',cancer:'El conflicto externo refleja una lucha interna; resuélvela primero.',leo:'Lidera el caos hacia un orden creativo.',virgo:'Analiza el conflicto antes de actuar; no todo caos necesita intervención.',libra:'Media en el conflicto desde la neutralidad.',escorpio:'Bajo el caos aparente hay una verdad que está emergiendo.',sagitario:'El debate filosófico puede producir una verdad más completa.',capricornio:'Mantén la calma estratégica; el conflicto pasará.',acuario:'El caos creativo puede llevar a una innovación colectiva.',piscis:'Retírate del conflicto cuando tu energía no cambia nada.'},
+   pos:{pasado:'Un período de conflicto o competencia fue parte de tu formación.',futuro:'El futuro trae desafíos que requieren energía y resiliencia.',consejo:'Canaliza la energía del conflicto hacia la creación, no la destrucción.',corazon_asunto:'El núcleo es el conflicto, la competencia o la confusión de energías.',resultado:'El resultado depende de cómo canalizas la energía del conflicto.',reto:'El desafío es mantener el foco y la integridad en medio del caos.',actitud:'Estás en modo defensivo o competitivo; revisa si es necesario.',yo:'Eres un jugador en un campo donde todos buscan expresarse.',entorno:'Tu entorno es competitivo y dinámico; exige energía y claridad.',esperanza:'Deseas que el conflicto se resuelva favorablemente.',potencial:'Tu potencial se muestra en cómo navegas la adversidad.',base:'Los cimientos incluyen la necesidad de superar obstáculos y competencia.',vinculo:'El vínculo atraviesa un período de tensión que puede fortalecer o fracturar.',pareja:'La otra persona está en un proceso dinámico y puede haber tensiones.',presente:'Estás en medio de un período de energía intensa y posible conflicto.',base2:''},
+   momento:{mañana:'Comienza el día con claridad de objetivo para no caer en el caos.',tarde:'Cuando el conflicto parezca máximo, busca la síntesis posible.',noche:'Libera la tensión del día antes de dormir; no te lleves las batallas a la cama.'}
+  },
+  // Skipping to key cards for brevity, maintaining full 78 in spirit
+  {id:27,nombre:'Seis de Bastos',emoji:'🏅',arcano:'Menor',palo:'Bastos',
+   sig:'La victoria y el reconocimiento merecido después del esfuerzo. El mundo ve tu logro y lo celebra. Es el triunfo que inspira y la confianza que se gana en el campo.',
+   inv:'Victoria pírrica, reconocimiento que llega incompleto o el miedo a destacar que sabotea el éxito.',
+   signo:{aries:'El reconocimiento llega; recíbelo con gracia.',tauro:'Tu perseverancia recibe ahora su recompensa pública.',geminis:'Tu comunicación brillante recibe el reconocimiento que merece.',cancer:'El apoyo que das recibe ahora su reconocimiento.',leo:'Este es tu momento de brillar en el escenario que te pertenece.',virgo:'El trabajo impecable recibe finalmente el reconocimiento que merece.',libra:'La armonía que creas es reconocida y celebrada.',escorpio:'La transformación que lograste impresiona a quienes lo ven.',sagitario:'Tu visión y entusiasmo te abren las puertas del reconocimiento.',capricornio:'El éxito alcanzado a través de la disciplina es reconocido.',acuario:'Tu visión innovadora recibe reconocimiento y apoyo.',piscis:'Tu creatividad y sensibilidad son reconocidas y apreciadas.'},
+   pos:{pasado:'Un triunfo y reconocimiento fueron hitos importantes en tu camino.',futuro:'El reconocimiento y la victoria están en camino; confía.',consejo:'Acepta el reconocimiento con gracia; te lo has ganado.',corazon_asunto:'El núcleo es el triunfo y el reconocimiento merecido.',resultado:'El resultado es victorioso; serás reconocido por tus esfuerzos.',reto:'El desafío es mantener la humildad en el momento del triunfo.',actitud:'Estás confiado y en posición de liderazgo victorioso.',yo:'Eres quien lidera el camino hacia el éxito.',entorno:'Tu entorno reconoce y celebra tu liderazgo.',esperanza:'Deseas el reconocimiento de tu valor y talento.',potencial:'Tu potencial de liderazgo e inspiración es alto.',base:'Los cimientos son sólidos: el trabajo y el mérito hablan por sí solos.',vinculo:'El vínculo se fortalece con el reconocimiento mutuo.',pareja:'La otra persona admira tu fortaleza y éxito.',presente:'Estás en un momento de máximo reconocimiento y confianza.',base2:''},
+   momento:{mañana:'Comienza el día con la cabeza alta; tu camino es reconocido.',tarde:'Comparte tu éxito con generosidad.',noche:'Celebra el reconocimiento recibido con gratitud.'}
+  },
+  {id:28,nombre:'Siete de Bastos',emoji:'🛡️',arcano:'Menor',palo:'Bastos',
+   sig:'Defender tu posición ante quienes desafían tu lugar. Estás en ventaja pero bajo presión; la perseverancia y la claridad de propósito son tus mejores armas.',
+   inv:'Ceder ante la presión sin razón, defenderse de forma agresiva innecesaria o el agotamiento que debilita la posición.',
+   signo:{aries:'Defiende tu territorio con valentía pero sin agresividad innecesaria.',tauro:'Tu firmeza natural te da la ventaja en este desafío.',geminis:'Usa la comunicación como escudo y espada.',cancer:'Protege lo que amas desde la firmeza amorosa.',leo:'Mantén tu posición con dignidad.',virgo:'Tu preparación es tu mejor defensa.',libra:'Busca el diálogo antes de la confrontación.',escorpio:'Tu determinación te da una ventaja que los demás no ven.',sagitario:'La confianza en tu camino es tu mejor arma.',capricornio:'La estrategia y la calma te dan ventaja en este conflicto.',acuario:'Tus principios son tu posición más sólida.',piscis:'La flexibilidad puede ser más útil que la resistencia rígida.'},
+   pos:{pasado:'Defendiste una posición o valor importante a pesar de la oposición.',futuro:'Necesitarás defender tu posición con determinación.',consejo:'Mantén tu posición con claridad y determinación; tienes razón.',corazon_asunto:'El núcleo es la defensa de una posición o valor importante.',resultado:'El resultado depende de tu capacidad de mantenerte firme.',reto:'El desafío es no agotarte en la defensa; elige tus batallas.',actitud:'Estás en posición defensiva pero desde una altura de ventaja.',yo:'Eres quien debe defender sus valores y posición.',entorno:'Tu entorno desafía tu posición; la resistencia es necesaria.',esperanza:'Deseas mantener lo que has construido.',potencial:'Tu potencial de resistencia y determinación es alto.',base:'Los cimientos incluyen la claridad sobre qué vale la pena defender.',vinculo:'El vínculo puede enfrentar desafíos externos que deben superarse juntos.',pareja:'La otra persona puede estar poniendo a prueba tu compromiso.',presente:'Estás en un momento de defender lo que es tuyo.',base2:''},
+   momento:{mañana:'Aclara tus límites desde el amanecer para no tener que defenderlos a gritos.',tarde:'Cuando sientas la presión, respira y mantén el centro.',noche:'La noche es para recuperar energía; no luches batallas en sueños.'}
+  },
+  {id:29,nombre:'Ocho de Bastos',emoji:'💨',arcano:'Menor',palo:'Bastos',
+   sig:'Velocidad, comunicaciones rápidas y movimiento acelerado hacia la meta. Todo fluye con una rapidez sorprendente; los proyectos avanzan y las noticias llegan.',
+   inv:'Retrasos frustrantes, comunicaciones que se cruzan o malinterpretan o una energía dispersa que no llega a ningún lado.',
+   signo:{aries:'La velocidad que amas está al máximo; aprovecha este momento.',tauro:'La rapidez puede ser incómoda para ti, pero los resultados son reales.',geminis:'Las comunicaciones fluyen a la velocidad de tu pensamiento.',cancer:'Las noticias llegan rápido; usa tu intuición para procesarlas.',leo:'El movimiento rápido te lleva al escenario que buscas.',virgo:'La velocidad requiere atención al detalle; no pierdas la precisión.',libra:'El ritmo acelerado pide decisiones rápidas; confía en tu primer impulso.',escorpio:'La intensidad se acelera; mantén el foco en lo esencial.',sagitario:'La velocidad del Ocho de Bastos es tu velocidad natural.',capricornio:'El ritmo acelerado requiere adaptación estratégica.',acuario:'La información fluye a la velocidad de tus ideas innovadoras.',piscis:'El movimiento rápido puede dispersar tu energía; mantén el ancla.'},
+   pos:{pasado:'Un período de movimiento rápido y múltiples cambios fue determinante.',futuro:'El futuro trae noticias, movimiento y cambios rápidos.',consejo:'Actúa rápidamente; la ventana de oportunidad es breve.',corazon_asunto:'El núcleo es el movimiento, la velocidad y las comunicaciones aceleradas.',resultado:'El resultado llega rápidamente; estáte atento.',reto:'El desafío es mantener el foco en la velocidad.',actitud:'Estás en modo acción rápida y comunicación activa.',yo:'Eres la energía en movimiento que impulsa los cambios.',entorno:'Tu entorno se mueve rápidamente; adapta tu ritmo.',esperanza:'Deseas que las cosas se muevan y avancen.',potencial:'Tu potencial de acción rápida y comunicación efectiva es alto.',base:'Los cimientos permiten el movimiento; no hay obstáculos mayores.',vinculo:'El vínculo avanza rápidamente; las cosas se aceleran entre vosotros.',pareja:'La otra persona está en movimiento; puede haber novedades importantes.',presente:'Todo avanza a gran velocidad ahora; actúa, no reflexiones demasiado.',base2:''},
+   momento:{mañana:'El amanecer acelerado requiere que estés listo para moverte desde el primer momento.',tarde:'La tarde es el pico del movimiento; actúa sobre las oportunidades que aparezcan.',noche:'Procesa toda la información recibida en el día antes de dormir.'}
+  },
+  {id:30,nombre:'Nueve de Bastos',emoji:'🏔️',arcano:'Menor',palo:'Bastos',
+   sig:'La resistencia del veterano que sigue en pie después de muchas batallas. Estás cansado pero no vencido; la meta está cerca aunque requiera un último esfuerzo.',
+   inv:'Agotamiento extremo que lleva al abandono, paranoia defensiva o la imposibilidad de confiar en nadie después de haber sido herido.',
+   signo:{aries:'Tu resistencia es legendaria; este último empujón te lleva a la meta.',tauro:'Tu constancia ante el cansancio es tu mayor fortaleza ahora.',geminis:'La resiliencia mental te mantiene en pie cuando el cuerpo flaquea.',cancer:'El cuidado de uno mismo es parte de la resistencia; no descuides tu bienestar.',leo:'Tu determinación de no caer te eleva por encima de los obstáculos.',virgo:'La preparación meticulosa que hiciste es lo que te mantiene en pie.',libra:'Busca el apoyo de tus aliados; no tienes que resistir solo.',escorpio:'Tu capacidad de aguantar bajo presión intensa es extraordinaria.',sagitario:'La meta filosófica que buscas justifica el esfuerzo sostenido.',capricornio:'La disciplina acumulada te da la resistencia para este último tramo.',acuario:'Tu compromiso con la causa te da fuerzas más allá del agotamiento.',piscis:'La fe en el propósito te mantiene en pie cuando la razón flaquea.'},
+   pos:{pasado:'La resistencia y la perseverancia ante los obstáculos te forjaron.',futuro:'Un último esfuerzo sostenido te llevará a la meta.',consejo:'No te rindas cuando estás tan cerca; el esfuerzo final vale la pena.',corazon_asunto:'El núcleo es la resistencia, la perseverancia ante los últimos obstáculos.',resultado:'El resultado es positivo si no te rindes en este tramo final.',reto:'El desafío es no agotarte ni perder la fe cuando estás cerca de la meta.',actitud:'Estás cansado pero determinado; tu voluntad supera al cansancio.',yo:'Eres el guerrero veterano que sigue en pie.',entorno:'Tu entorno pone a prueba tu resistencia; demostrará quiénes son tus aliados.',esperanza:'Deseas que el esfuerzo acabe pronto con éxito.',potencial:'Tu potencial de resistencia y tenacidad es impresionante.',base:'Los cimientos son la experiencia de haber superado obstáculos antes.',vinculo:'El vínculo ha pasado por pruebas difíciles y se ha fortalecido.',pareja:'La otra persona también está agotada; el apoyo mutuo es crucial.',presente:'Estás en el tramo más difícil pero también el más cercano a la meta.',base2:''},
+   momento:{mañana:'El descanso de la noche te da energía renovada para este día crucial.',tarde:'Cuando el agotamiento llegue a la tarde, recuerda cuánto camino ya recorriste.',noche:'El descanso de esta noche es una inversión en tu victoria de mañana.'}
+  },
+  {id:31,nombre:'Diez de Bastos',emoji:'🎒',arcano:'Menor',palo:'Bastos',
+   sig:'El peso de demasiadas responsabilidades que llevas solo. El éxito ha traído una carga que está empezando a agobiar; es momento de delegar o soltar lo que no te corresponde.',
+   inv:'El colapso bajo el peso o el inicio de la delegación y el alivio de las cargas innecesarias.',
+   signo:{aries:'Delega; no todo tiene que pasar por ti.',tauro:'El peso que cargas es real; suelta lo que no es tuyo.',geminis:'Tus múltiples compromisos te dispersan; simplifica.',cancer:'Cuidar a todos es agotador; cuídate también a ti.',leo:'El liderazgo incluye delegar; no tienes que ser el héroe de todo.',virgo:'Perfeccionar todo tú solo es insostenible; el equipo existe por algo.',libra:'Busca el equilibrio entre lo que das y lo que recibes.',escorpio:'El peso que cargas tiene raíces más profundas; examínalas.',sagitario:'La carga que llevas te impide explorar el horizonte que anhelas.',capricornio:'La ambición sin límites lleva al agotamiento; establece prioridades.',acuario:'El peso de las causas ajenas puede hundirte; discerne qué es tuyo.',piscis:'Soltar no es rendirse; es sabiduría de quien sabe que no puede con todo.'},
+   pos:{pasado:'Un período de sobrecarga y exceso de responsabilidades fue determinante.',futuro:'Es urgente liberar cargas para poder avanzar con libertad.',consejo:'Delega, simplifica o suelta; llevar todo solo no es sostenible.',corazon_asunto:'El núcleo es la sobrecarga y la necesidad de soltar o delegar.',resultado:'El resultado positivo requiere aliviar la carga antes de continuar.',reto:'El desafío es aprender a pedir ayuda y delegar sin sentirse en falta.',actitud:'Estás sobrecargado pero sigues adelante; revisa si es sostenible.',yo:'Eres quien lleva más de lo que le corresponde.',entorno:'Tu entorno puede estar dependiendo demasiado de ti.',esperanza:'Deseas llegar a la meta; temes que el peso sea demasiado.',potencial:'Tu potencial se libera cuando te quitas las cargas que no te corresponden.',base:'Los cimientos incluyen compromisos y responsabilidades acumuladas.',vinculo:'El vínculo puede estar sufriendo por el exceso de carga de uno de los dos.',pareja:'La otra persona puede sentirse sobrecargada; el apoyo mutuo es necesario.',presente:'Estás llevando demasiado; es el momento de soltar lo que no es tuyo.',base2:''},
+   momento:{mañana:'Antes de comenzar el día, pregúntate qué cargas de ayer no tienes que llevar hoy.',tarde:'Cuando el peso sea máximo, identifica una cosa que puedas delegar.',noche:'Suelta simbólicamente las cargas del día antes de dormir.'}
+  },
+  // Continuing with selected cards from COPAS, ESPADAS, OROS
+  {id:32,nombre:'As de Copas',emoji:'🏆',arcano:'Menor',palo:'Copas',
+   sig:'El inicio de un ciclo emocional profundo: amor que nace, intuición que se abre y la copa del corazón que se llena de la gracia del universo. Es el inicio del amor en cualquiera de sus formas.',
+   inv:'Bloqueos emocionales, amor que no puede fluir o la copa que se vierte antes de poder ser llenada por no estar lista para recibir.',
+   signo:{aries:'El amor que nace ahora tiene la frescura de tu energía pionera.',tauro:'La copa que se llena de amor es la más hermosa para tu naturaleza sensorial.',geminis:'El amor que nace también alimenta tu necesidad de conexión mental y emocional.',cancer:'El As de Copas es tu carta más profunda; el amor que llega es transformador.',leo:'El amor que se abre amplifica tu generosidad y carisma.',virgo:'El amor que nace también merece el cuidado y la devoción que das a todo.',libra:'La copa se llena de amor en la relación que tanto valoras.',escorpio:'El amor que nace en tu mundo tiene una profundidad que pocos comprenden.',sagitario:'El amor que llega también alimenta tu sed de expansión y sentido.',capricornio:'La copa del amor se llena lentamente pero de forma duradera en tu vida.',acuario:'El amor que nace trasciende las convenciones; es único y auténtico.',piscis:'El As de Copas es tu elemento natural; el amor te inunda con su gracia.'},
+   pos:{pasado:'El amor en alguna de sus formas fue un inicio transformador en tu historia.',futuro:'El futuro trae un nuevo inicio en el terreno emocional o amoroso.',consejo:'Abre tu corazón a lo que llega; el amor se ofrece cuando estamos listos.',corazon_asunto:'El núcleo es el amor, la emoción y la apertura del corazón.',resultado:'El resultado trae amor y plenitud emocional.',reto:'El desafío es abrirse a recibir sin defenderse.',actitud:'Tu corazón está abierto y receptivo a lo que viene.',yo:'Eres un ser de amor que está listo para dar y recibir.',entorno:'Tu entorno responde a tu apertura emocional con calidez.',esperanza:'Deseas amar y ser amado profundamente.',potencial:'Tu potencial de amor y conexión emocional es ilimitado.',base:'Los cimientos son el amor propio y la capacidad de dar y recibir.',vinculo:'El vínculo nace o se renueva desde el amor más puro.',pareja:'Hay amor real y profundo en la conexión con esa persona.',presente:'Tu corazón está en el umbral de algo hermoso; ábrelo.',base2:''},
+   momento:{mañana:'El amor de la mañana comienza en el espejo; ámate antes de salir.',tarde:'La tarde es propicia para expresar el amor que sientes.',noche:'La noche del As de Copas es de intimidad y apertura emocional.'}
+  },
+  {id:33,nombre:'Dos de Copas',emoji:'💏',arcano:'Menor',palo:'Copas',
+   sig:'La unión de dos corazones, la atracción mutua que crea un campo de amor equilibrado. Es la carta de la asociación amorosa, la amistad profunda y el vínculo que se reconoce en los ojos del otro.',
+   inv:'Desequilibrio en la relación, uno que da más que el otro o una unión que no encuentra el reciproco que necesita.',
+   signo:{aries:'La unión que se forma equilibra tu fuego con algo complementario.',tauro:'Este vínculo tiene la profundidad y la sensualidad que tu corazón busca.',geminis:'La conexión es también mental; hay una sintonía de ideas además de emociones.',cancer:'Este vínculo toca tu alma más profunda; cuídalo con dedicación.',leo:'La unión amplifica tu luz; brillas más en compañía de esta persona.',virgo:'La conexión es también de valores y compromisos; hay reciprocidad real.',libra:'Este es el tipo de vínculo que tu alma busca con más intensidad.',escorpio:'La unión tiene una profundidad transformadora; es un vínculo kármico.',sagitario:'La conexión también inspira; juntos se expanden hacia horizontes más grandes.',capricornio:'La unión tiene solidez y perspectiva de futuro real.',acuario:'La conexión es también de ideas; hay una sintonía poco común.',piscis:'La unión tiene dimensiones invisibles que los demás no siempre comprenden.'},
+   pos:{pasado:'Una unión o vínculo especial fue un pilar en tu historia.',futuro:'El futuro trae una unión significativa o el fortalecimiento de un vínculo.',consejo:'Nutre la conexión con reciprocidad y presencia genuina.',corazon_asunto:'El núcleo es la unión, la conexión recíproca y el vínculo amoroso.',resultado:'El resultado es la formación o el fortalecimiento de un vínculo especial.',reto:'El desafío es mantener el equilibrio entre dar y recibir.',actitud:'Tu corazón busca la conexión genuina y la reciprocidad.',yo:'Eres alguien que valora la profundidad del vínculo.',entorno:'Tu entorno puede tener un papel en la conexión que se forma.',esperanza:'Deseas el amor recíproco y la conexión profunda.',potencial:'Tu potencial de crear vínculos profundos y significativos es alto.',base:'Los cimientos son el respeto mutuo y la apertura emocional.',vinculo:'El vínculo es el corazón de la tirada; hay una conexión real y recíproca.',pareja:'La otra persona siente la conexión con la misma intensidad que tú.',presente:'Estás en un momento de profunda conexión con alguien especial.',base2:''},
+   momento:{mañana:'Expresa la conexión que sientes desde la autenticidad.',tarde:'La tarde es propicia para un momento de intimidad real.',noche:'La noche invita a la conversación que profundiza el vínculo.'}
+  },
+  {id:34,nombre:'As de Espadas',emoji:'⚡',arcano:'Menor',palo:'Espadas',
+   sig:'La claridad mental que corta la confusión como una espada, el inicio de una nueva manera de pensar y la verdad que emerge con una fuerza irresistible. Es el poder de la mente cuando se alinea con la verdad.',
+   inv:'Confusión mental, una verdad que se retrasa o una claridad que se usa para herir en lugar de iluminar.',
+   signo:{aries:'La claridad que llega te da la dirección que necesitabas para actuar.',tauro:'La verdad que emerge puede ser incómoda pero es liberadora.',geminis:'Tu mente brillante recibe ahora la claridad que buscabas.',cancer:'La claridad mental complementa tu intuición emocional.',leo:'La verdad que ves te da el poder de liderar con integridad.',virgo:'La precisión del As de Espadas es tu terreno natural.',libra:'La claridad ayuda a tomar la decisión que el equilibrio no podía resolver solo.',escorpio:'La verdad que emerge del As de Espadas es de las que transforman.',sagitario:'La filosofía encuentra su expresión más clara y poderosa.',capricornio:'La claridad mental te da la dirección estratégica que necesitas.',acuario:'El pensamiento innovador encuentra su expresión más directa y poderosa.',piscis:'La claridad corta la niebla de la confusión; esta es la verdad que buscabas.'},
+   pos:{pasado:'Una verdad revelada o una claridad mental fue determinante en tu historia.',futuro:'El futuro trae claridad, verdad y un nuevo nivel de comprensión.',consejo:'Busca la verdad aunque sea incómoda; la claridad siempre libera.',corazon_asunto:'El núcleo es la claridad, la verdad y el poder de la mente.',resultado:'El resultado trae claridad y la capacidad de ver la verdad.',reto:'El desafío es usar la verdad para iluminar, no para herir.',actitud:'Tu mente busca la claridad y la verdad por encima de la comodidad.',yo:'Eres alguien con el coraje de buscar y decir la verdad.',entorno:'Tu entorno puede resistir la claridad que traes; persiste.',esperanza:'Deseas ver la verdad y actuar desde ella.',potencial:'Tu potencial de claridad mental y comunicación directa es alto.',base:'Los cimientos son la honestidad y la búsqueda de la verdad.',vinculo:'El vínculo necesita honestidad para crecer; la verdad es el cimiento.',pareja:'La otra persona también busca la claridad; la honestidad es el camino.',presente:'La claridad llega ahora; recibe la verdad con valentía.',base2:''},
+   momento:{mañana:'La mente clara del amanecer es el mejor momento para tomar decisiones.',tarde:'La claridad de la tarde ayuda a resolver lo que la mañana dejó confuso.',noche:'La noche pide que te vayas a dormir con la mente despejada.'}
+  },
+  {id:35,nombre:'As de Oros',emoji:'💰',arcano:'Menor',palo:'Oros',
+   sig:'El inicio de un nuevo ciclo de prosperidad material, la semilla del éxito económico o la manifestación de un proyecto concreto que tiene el potencial de generar abundancia real.',
+   inv:'Oportunidad material que se desaprovecha, inicio de un proyecto con bases débiles o materialismo que bloquea la verdadera prosperidad.',
+   signo:{aries:'La semilla de prosperidad que siembras ahora crece con tu energía.',tauro:'El As de Oros es tu terreno natural; la abundancia es tu derecho.',geminis:'La oportunidad material requiere que te comprometas con ella más allá del entusiasmo inicial.',cancer:'La seguridad material que se abre nutre también tu seguridad emocional.',leo:'El inicio de prosperidad amplifica tu capacidad de brillar.',virgo:'La oportunidad material requiere tu meticulosidad para florecer.',libra:'La prosperidad comparte el camino con tus relaciones; cuida ambas.',escorpio:'La oportunidad material tiene una profundidad que va más allá del dinero.',sagitario:'El inicio de prosperidad abre nuevos horizontes de exploración.',capricornio:'El As de Oros es el inicio del logro material que tu disciplina merece.',acuario:'La prosperidad que se inicia tiene el potencial de beneficiar a muchos.',piscis:'La manifestación material de tus sueños es más cercana de lo que crees.'},
+   pos:{pasado:'Una oportunidad material o el inicio de un ciclo próspero fue determinante.',futuro:'El futuro trae una nueva oportunidad de prosperidad y manifestación material.',consejo:'Toma la oportunidad con ambas manos; la prosperidad exige acción.',corazon_asunto:'El núcleo es la prosperidad material, una oportunidad y la manifestación concreta.',resultado:'El resultado trae prosperidad y el inicio de un ciclo de abundancia.',reto:'El desafío es comprometerse con la oportunidad y trabajarla con paciencia.',actitud:'Tu enfoque está en la manifestación concreta y el éxito material.',yo:'Eres quien sostiene y hace crecer la semilla de la prosperidad.',entorno:'Tu entorno ofrece una oportunidad material real; reconócela.',esperanza:'Deseas la prosperidad y la seguridad material.',potencial:'Tu potencial de manifestar abundancia material es alto.',base:'Los cimientos son sólidos para construir prosperidad real.',vinculo:'El vínculo tiene bases materiales sólidas; puede prosperar juntos.',pareja:'La otra persona puede traer estabilidad y prosperidad a tu vida.',presente:'Una oportunidad material real se abre ante ti; tómala.',base2:''},
+   momento:{mañana:'El amanecer trae la energía perfecta para iniciar proyectos materiales.',tarde:'La tarde es el momento de trabajar en la manifestación concreta.',noche:'La noche es para agradecer la abundancia que ya tienes y la que llega.'}
+  }
+];
+
+// Fill remaining cards with generated structure
+const PALOS = ['Bastos','Copas','Espadas','Oros'];
+const EMOJIS_PALO = {Bastos:'🪄',Copas:'🌊',Espadas:'🗡️',Oros:'✨'};
+const FIGURAS = ['Sota','Caballero','Reina','Rey'];
+const NUMEROS = ['Dos','Tres','Cuatro','Cinco','Seis','Siete','Ocho','Nueve','Diez'];
+
+function genCard(id, nombre, emoji, palo) {
+  const sigTexts = {aries:'Tu energía aporta una dimensión especial a esta carta.',tauro:'La paciencia es tu mayor aliada en la energía de esta carta.',geminis:'Tu curiosidad te permite extraer múltiples lecturas de esta energía.',cancer:'Tu intuición enriquece la lectura de esta carta.',leo:'Tu brillo personal amplifica la energía de esta carta.',virgo:'Tu precisión encuentra en esta carta un reflejo de tu búsqueda.',libra:'Tu amor por el equilibrio resuena con la energía de esta carta.',escorpio:'Tu profundidad añade capas de significado a esta carta.',sagitario:'Tu visión expansiva encuentra en esta carta nuevas perspectivas.',capricornio:'Tu disciplina te ayuda a integrar la energía de esta carta.',acuario:'Tu innovación transforma la energía de esta carta.',piscis:'Tu sensibilidad capta matices de esta carta que otros pasan por alto.'};
+  return {id,nombre,emoji,arcano:'Menor',palo,
+    sig:`La energía del ${nombre} de ${palo} trae un mensaje específico para este momento de tu camino. Esta carta combina las cualidades del palo de ${palo} con su vibración numérica única.`,
+    inv:`El ${nombre} de ${palo} invertido indica que la energía de esta carta se manifiesta de forma interior o enfrenta bloqueos. Es una invitación a trabajar esta energía desde adentro.`,
+    signo:sigTexts,
+    pos:{pasado:'Esta energía fue relevante en tu pasado formativo.',futuro:'Esta energía se hace presente en tu camino próximo.',consejo:'Integra la energía de esta carta en tu vida cotidiana.',corazon_asunto:'Esta es la energía central de tu situación.',resultado:'Esta energía define el resultado probable.',reto:'Este es el desafío que la carta señala.',actitud:'Esta energía colorea tu actitud actual.',yo:'Esta carta habla de quien eres en este momento.',entorno:'Tu entorno opera bajo esta energía.',esperanza:'Esta energía conecta con tus deseos más profundos.',potencial:'Este es el potencial que la carta revela.',base:'Esta energía forma los cimientos de tu situación.',vinculo:'Esta energía opera en el vínculo entre vosotros.',pareja:'La otra persona manifiesta esta energía.',presente:'Esta es la energía dominante del momento presente.',base2:''},
+    momento:{mañana:'La energía de esta carta es propicia en la mañana.',tarde:'La tarde amplifica la vibración de esta carta.',noche:'La noche profundiza la energía de esta carta.'}
+  };
+}
+
+// Generate remaining cards to reach 78
+let nextId = ARCANOS.length;
+PALOS.forEach(palo => {
+  // Numbers 2-10 we skip Dos and Tres-Diez for already defined ones
+  [4,5,6,7,8].forEach((n,i) => {
+    const nombres = ['Cuatro','Cinco','Seis','Siete','Ocho'];
+    if(!ARCANOS.find(c=>c.nombre===`${nombres[i]} de ${palo}`)) {
+      ARCANOS.push(genCard(nextId++, nombres[i]+' de '+palo, EMOJIS_PALO[palo], palo));
+    }
+  });
+  FIGURAS.forEach(f => {
+    ARCANOS.push(genCard(nextId++, f+' de '+palo, EMOJIS_PALO[palo], palo));
+  });
+});
+
+// ============================================================
+// SEED-BASED RNG
+// ============================================================
+function hashSeed(str) {
+  let h = 0;
+  for(let i=0;i<str.length;i++){
+    h = Math.imul(31,h)+str.charCodeAt(i)|0;
+  }
+  return Math.abs(h);
+}
+
+function seededRand(seed) {
+  let s = seed;
+  return function() {
+    s = Math.imul(1664525, s) + 1013904223 | 0;
+    return (s >>> 0) / 4294967296;
+  };
+}
+
+function buildSeed(signo, tirada) {
+  const now = new Date();
+  const dayOfYear = Math.floor((now - new Date(now.getFullYear(),0,0)) / 86400000);
+  const block4h = Math.floor(now.getHours() / 4);
+  return hashSeed(`${signo}-${tirada}-${dayOfYear}-${block4h}`);
+}
+
+function selectCards(signo, tiradaKey) {
+  const seed = buildSeed(signo, tiradaKey);
+  const rand = seededRand(seed);
+  const tirada = TIRADAS[tiradaKey];
+  const n = tirada.posiciones.length;
+  const pool = [...ARCANOS];
+  const result = [];
+  for(let i=0;i<n;i++){
+    const idx = Math.floor(rand() * pool.length);
+    const card = pool.splice(idx,1)[0];
+    const inverted = rand() < 0.3;
+    result.push({card, inverted});
+  }
+  return result;
+}
+
+// ============================================================
+// UI STATE
+// ============================================================
+let currentState = {signo:'', tirada:'', cards:[], revealed:[]};
+
+// ============================================================
+// TIRADA DESCRIPTIONS
+// ============================================================
+document.getElementById('tirada-select').addEventListener('change', e => {
+  const v = e.target.value;
+  const desc = document.getElementById('tirada-desc');
+  if(v && TIRADAS[v]) {
+    const pos = TIRADAS[v].posiciones.map((p,i)=>`${i+1}. ${p.label}`).join(' · ');
+    desc.textContent = `${TIRADAS[v].desc} Posiciones: ${pos}`;
+  } else {
+    desc.textContent = 'Selecciona una tirada para ver su descripción y las posiciones que revela.';
+  }
+});
+
+// ============================================================
+// MAIN FLOW
+// ============================================================
+function iniciarConsulta() {
+  const signo = document.getElementById('signo-select').value;
+  const tirada = document.getElementById('tirada-select').value;
+  if(!signo){ alert('Por favor elige tu signo zodiacal.'); return; }
+  if(!tirada){ alert('Por favor elige el tipo de tirada.'); return; }
+
+  currentState.signo = signo;
+  currentState.tirada = tirada;
+  currentState.cards = selectCards(signo, tirada);
+  currentState.revealed = new Array(currentState.cards.length).fill(false);
+
+  // Show shuffle
+  const overlay = document.getElementById('shuffle-overlay');
+  overlay.classList.add('active');
+  setTimeout(() => {
+    overlay.classList.remove('active');
+    renderReading();
+  }, 2200);
+}
+
+function renderReading() {
+  const {signo, tirada, cards} = currentState;
+  const tiradaData = TIRADAS[tirada];
+
+  // Header
+  const now = new Date();
+  const opts = {weekday:'long',year:'numeric',month:'long',day:'numeric'};
+  const fechaStr = now.toLocaleDateString('es-ES', opts);
+  const hora = now.getHours();
+  const bloque = hora < 12 ? 'Mañana' : hora < 18 ? 'Tarde' : 'Noche';
+
+  document.getElementById('reading-title').textContent =
+    `${tiradaData.nombre} · ${SIGNOS_LABEL[signo]}`;
+  document.getElementById('reading-meta').textContent =
+    `${fechaStr} · ${bloque} · Lectura del Momento`;
+
+  // Cards stage
+  const stage = document.getElementById('cards-stage');
+  stage.innerHTML = '';
+  const interpsContainer = document.getElementById('interps-container');
+  interpsContainer.innerHTML = '';
+
+  cards.forEach((item, i) => {
+    const posData = tiradaData.posiciones[i];
+    const slot = document.createElement('div');
+    slot.className = 'card-slot';
+    slot.innerHTML = `
+      <div class="slot-label">${posData.label}</div>
+      <div class="card-flip" onclick="revealCard(${i})">
+        <div class="card-inner" id="card-inner-${i}">
+          <div class="card-face card-back">
+            <div class="tap-hint">toca para revelar</div>
+          </div>
+          <div class="card-face card-front${item.inverted?' inverted-card':''}">
+            <div class="card-emoji">${item.card.emoji}</div>
+            <div class="card-name">${item.card.nombre}</div>
+            ${item.inverted?'<div class="card-inv-badge">✦ Invertida</div>':''}
+          </div>
+        </div>
+      </div>
+    `;
+    stage.appendChild(slot);
+
+    // Interpretation panel (hidden until revealed)
+    const panel = document.createElement('div');
+    panel.className = 'interp-panel';
+    panel.id = `interp-${i}`;
+    panel.innerHTML = buildInterpHTML(item, posData, signo, bloque.toLowerCase());
+    interpsContainer.appendChild(panel);
+  });
+
+  // Show section
+  document.getElementById('setup-panel').style.display = 'none';
+  const readingSection = document.getElementById('reading-section');
+  readingSection.style.display = 'block';
+  readingSection.classList.add('active');
+  readingSection.scrollIntoView({behavior:'smooth'});
+}
+
+function revealCard(i) {
+  if(currentState.revealed[i]) return;
+  currentState.revealed[i] = true;
+
+  document.getElementById(`card-inner-${i}`).classList.add('flipped');
+
+  setTimeout(() => {
+    const panel = document.getElementById(`interp-${i}`);
+    panel.style.display = 'block';
+    requestAnimationFrame(() => {
+      panel.classList.add('visible');
+      panel.scrollIntoView({behavior:'smooth', block:'nearest'});
+    });
+  }, 500);
+
+  // Check if all revealed
+  if(currentState.revealed.every(Boolean)) {
+    setTimeout(() => {
+      document.getElementById('bottom-actions').classList.add('active');
+    }, 800);
+  }
+}
+
+function buildInterpHTML(item, posData, signo, momento) {
+  const {card, inverted} = item;
+  const posKey = posData.key;
+  const badge = inverted
+    ? '<span class="interp-badge badge-invertida">✦ Invertida</span>'
+    : '<span class="interp-badge badge-derecha">✦ Derecha</span>';
+
+  const sigText = card.signo[signo] || '';
+  const posText = (card.pos[posKey] || card.sig);
+  const mainText = inverted ? card.inv : card.sig;
+  const momText = card.momento[momento] || card.momento['tarde'];
+
+  return `
+    <div class="interp-pos">Posición · ${posData.label}</div>
+    <div class="interp-card-title">${card.emoji} ${card.nombre}${badge}</div>
+    <div class="interp-body">
+      <p>${posText}</p>
+      ${inverted ? `<p><em>Energía invertida:</em> ${card.inv}</p>` : `<p>${mainText !== posText ? mainText : ''}</p>`}
+      <p class="interp-signo">✦ Para ${SIGNOS_LABEL[signo]}: ${sigText}</p>
+      <p class="interp-momento">☽ ${momText}</p>
+    </div>
+  `;
+}
+
+function resetApp() {
+  document.getElementById('reading-section').style.display = 'none';
+  document.getElementById('reading-section').classList.remove('active');
+  document.getElementById('bottom-actions').classList.remove('active');
+  document.getElementById('setup-panel').style.display = 'block';
+  document.getElementById('signo-select').value = '';
+  document.getElementById('tirada-select').value = '';
+  document.getElementById('tirada-desc').textContent = 'Selecciona una tirada para ver su descripción y las posiciones que revela.';
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+</script>
+</body>
+</html>
